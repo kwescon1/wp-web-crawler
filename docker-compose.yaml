@@ -1,0 +1,46 @@
+version: "3.9"
+
+networks:
+  wp:
+    driver: "bridge"
+
+services:
+  #PHP-FPM service
+  app:
+    build:
+      context: .
+      dockerfile: ./docker-files/php/Dockerfile
+    container_name: wp-web-crawler
+    restart: unless-stopped
+    tty: true
+    working_dir: /var/www/wp-web-crawler
+    # depends_on:
+    #   - composer
+
+    volumes:
+      - ./:/var/www/wp-web-crawler
+      - ./docker-files/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+
+    networks:
+      - wp
+
+  #   #NGINX service
+  wp_webserver:
+    build:
+      context: .
+      dockerfile: ./docker-files/nginx/Dockerfile
+    container_name: wp_webserver
+    restart: unless-stopped
+    depends_on:
+      # - db
+      - app
+
+    ports:
+      - "7005:80"
+
+    volumes:
+      - ./:/var/www/wp-web-crawler
+      - ./docker-files/nginx/conf.d/app.conf:/etc/nginx/conf.d/app.conf
+
+    networks:
+      - wp
