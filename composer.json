@@ -19,16 +19,24 @@
 		"source": "https://github.com/wp-media/package-template"
 	},
 	"require-dev": {
-		"php": "^5.6 || ^7",
+		"php": "^7.2 || ^7.4",
 		"brain/monkey": "^2.0",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
 		"phpcompatibility/phpcompatibility-wp": "^2.0",
-		"phpunit/phpunit": "^5.7 || ^7",
+		"phpunit/phpunit": "^8 || ^9",
 		"wp-coding-standards/wpcs": "^2",
 		"wp-media/phpunit": "dev-master"
 	},
-	"autoload": {},
-	"autoload-dev": {},
+	"autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
 	"scripts": {
 		"test-unit": "\"vendor/bin/wpmedia-phpunit\" unit path=Tests/Unit",
 		"test-integration": "\"vendor/bin/wpmedia-phpunit\" integration path=Tests/Integration/",
