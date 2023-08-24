@@ -7,6 +7,7 @@ use PDOException;
 
 class Connection
 {
+    
     // Hold the single instance of the Connection class
     private static $instance = null;
 
@@ -25,12 +26,19 @@ class Connection
     // Private constructor to prevent direct instantiation
     private function __construct()
     {
+        // Get the configuration values from the included file
+        $config = require_once __DIR__ . '/../../config/database.php';
+
         // Create a connection string to connect to the database using environment variables
-        $connectionString = "mysql:host={$_ENV['MYSQL_HOST']};dbname={$_ENV['MYSQL_DATABASE']};port={$_ENV['MYSQL_PORT']}";
+        $connectionString = "mysql:host={$config['db_host']};dbname={$config['db_name']};port={$config['db_port']}";
 
         try {
-            // Establish a PDO connection using the connection string, username, and password
-            $this->pdo = new PDO($connectionString, $_ENV['MYSQL_USER'], $_ENV['MYSQL_PASSWORD'], self::OPTIONS);
+            // Establish a PDO connection using the connection, username, and password
+            $this->pdo = new PDO($connectionString, $config['db_user'], $config['db_password'], self::OPTIONS);
+
+            // Set the character encoding for the connection
+        $this->pdo->exec("SET NAMES '{$this->charset}'");
+
         } catch (PDOException $exception) {
             // If a connection error occurs, throw a PDOException
             throw new PDOException($exception->getMessage(), (int) $exception->getCode());

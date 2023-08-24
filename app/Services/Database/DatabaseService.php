@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Database;
 
+use PDO;
 use App\Database\Connection;
 
 /**
@@ -12,9 +13,9 @@ abstract class DatabaseService
     /**
      * The database connection instance.
      *
-     * @var \PDO
+     * @var PDO
      */
-    protected \PDO $connection;
+    protected PDO $connection;
 
     /**
      * Constructor to initialize the database connection.
