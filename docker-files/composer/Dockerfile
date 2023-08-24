@@ -1,4 +1,4 @@
-FROM php:7.2-fpm
+FROM php:7.4-fpm
 
 # Set working directory
 WORKDIR /var/www/wp-web-crawler
@@ -24,10 +24,6 @@ RUN apt-get update && apt-get install -y \
 
 # Install PHP extensions
 RUN docker-php-ext-install pcntl pdo pdo_mysql
-
-# Install redis extensions
-RUN pecl install redis \
-    && docker-php-ext-enable redis
 
 
 # add user ubuntu, add group ubuntu
