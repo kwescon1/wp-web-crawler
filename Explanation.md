@@ -24,11 +24,11 @@ To achieve the desired outcome, the solution involves the following technical st
 
 ## Technical Decisions And Why
 
-**Object-Oriented Programming (OOP) Approach**
+### Object-Oriented Programming (OOP) Approach
 
 An object oriented programming approach was embraced for the core application architecture. This decision offers a more organized, modular, and maintainable codebase, enhancing code readability and reducing complexities.
 
-**PHP App**
+### PHP App
 
 The decision to build a PHP app was driven by several key factors. Building a PHP app provides the scalability required for potential future expansion or integration with diverse systems and platforms beyond the scope of WordPress. This approach emphasizes simplicity and clarity, leading to a more focused codebase without unnecessary overhead or complexity associated with integrating into WordPress's extensive ecosystem. The isolation offered by a standalone PHP app ensures that it operates autonomously, minimizing conflicts with existing plugins, themes, or customizations. Moreover, the choice to develop a PHP app offers unparalleled flexibility and control over the application's architecture, design, and functionalities, enabling precise implementation of the required features to achieve the desired outcome.
 
