@@ -12,7 +12,10 @@
 	],
 	"type": "library",
 	"config": {
-		"sort-packages": true
+		"sort-packages": true,
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
 	},
 	"support": {
 		"issues": "https://github.com/wp-media/package-template/issues",
@@ -21,11 +24,11 @@
 	"require-dev": {
 		"php": "^7.2 || ^7.4",
 		"brain/monkey": "^2.0",
-		"dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
+		"dealerdirect/phpcodesniffer-composer-installer": "^1.0.0",
 		"phpcompatibility/phpcompatibility-wp": "^2.0",
 		"phpunit/phpunit": "^8 || ^9",
 		"wp-coding-standards/wpcs": "^2",
-		"wp-media/phpunit": "dev-master"
+		"wp-media/phpunit": "dev-trunk"
 	},
 	"autoload": {
         "psr-4": {
