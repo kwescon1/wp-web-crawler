@@ -1,2 +1,6 @@
 /vendor/*
 /Tests/env/local/
+/storage
+/vendor
+.env
+/node_modules
