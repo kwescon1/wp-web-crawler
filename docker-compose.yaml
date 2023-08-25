@@ -16,7 +16,12 @@ services:
     working_dir: /var/www/wp-web-crawler
     depends_on:
       - composer
-
+    environment:
+      MYSQL_HOST: ${DB_HOST}
+      MYSQL_PORT: ${DB_PORT}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
       - ./:/var/www/wp-web-crawler
       - ./docker-files/php/local.ini:/usr/local/etc/php/conf.d/local.ini
@@ -61,6 +66,7 @@ services:
     volumes:
       - ./storage/dbdata:/var/lib/mysql
       - ./docker-files/mysql/mysql.cnf:/etc/mysql/mysql.cnf
+      - ./docker-files/mysql/db.sql:/docker-entrypoint-initdb.d/db.sql
     networks:
       - wp
 
