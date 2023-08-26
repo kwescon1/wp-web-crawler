@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Authenticate user using AuthService
     $loginResult = $authService->login($username, $password);
     if ($loginResult) {
-        header('Location: dashboard.php');
+        header('Location: index.php');
         exit();
     } elseif (!$loginResult) {
         $error = "Invalid credentials. Please try again.";
