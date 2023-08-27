@@ -9,4 +9,6 @@ interface StorageServiceInterface{
     public function deleteLastCrawlResults(): bool;
 
     public function deleteSiteMapFile():bool;
+
+    public function createHomePageHtmlFile($data):void;
 }

@@ -56,7 +56,7 @@ return $this->connection->query($selectQuery)->fetchColumn();
 
     public function deleteLastCrawlResults(): bool
     {
-        $deleteQuery = "DELETE FROM crawl_results WHERE created_at < NOW()";
+        $deleteQuery = "DELETE FROM {$this->table} WHERE created_at < NOW()";
 
         $statement = $this->connection->prepare($deleteQuery);
 
@@ -95,6 +95,14 @@ return $this->connection->query($selectQuery)->fetchColumn();
         file_put_contents($this->outputFolderPath . '/' . self::SITEMAP, $sitemapContent);
     }
 
+     // Create a homepage.html file
+     public function createHomePageHtmlFile($data):void {
+
+        $this->createOutputFolder($this->outputFolderPath);
+        
+        file_put_contents($this->outputFolderPath . '/' . self::HOMEPAGE, $data);
+    }
+
     public function deleteSiteMapFile(): bool
     {
         if (!$this->verifySiteMapFileExists()) {
@@ -109,4 +117,5 @@ return $this->connection->query($selectQuery)->fetchColumn();
             mkdir($outputFolderPath);
         }
     }
+
 }
