@@ -2,8 +2,17 @@
 
 namespace App\Services\Crawler;
 
+use App\Services\Storage\StorageServiceInterface;
+
 class CrawlerService implements CrawlerServiceInterface
 {
+
+    private $storageService;
+
+    public function __construct(StorageServiceInterface $storageService) {
+
+        $this->storageService = $storageService;
+    }
 
     /**
      * @param string $url
@@ -32,7 +41,13 @@ class CrawlerService implements CrawlerServiceInterface
         $res = $client->request('GET', $url);
 
         // Use regular expression to extract internal links
-        preg_match_all('/<a[^>]+href="([^">]+)"[^>]*>/i', $res->getBody(), $matches);
+        preg_match_all('/<a[^>]+href="([^">]+)"[^>]*>/i', $res->getBody()->getContents(), $matches);
+
+        if (empty($matches[1])) {
+            return null;
+        }
+
+        $internalLinks = [];
 
         foreach ($matches[1] as $link) {
             //extract internal links
@@ -41,6 +56,9 @@ class CrawlerService implements CrawlerServiceInterface
                 $internalLinks[] = $url . $link;
             }
         }
+
+        //create hompage html file
+        $this->storageService->createHomePageHtmlFile($res->getBody());
 
         return $internalLinks;
     }
