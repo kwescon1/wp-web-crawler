@@ -28,13 +28,13 @@ class UserService extends DatabaseService implements UserServiceInterface {
         $stmt = $this->connection->prepare($query);
 
         // Bind the username parameter to the prepared statement
-        $stmt->bindValue(':username', $username, \PDO::PARAM_STR);
+        $stmt->bindValue(':username', $username, $this->connection::PARAM_STR);
 
         //execute statement
         $stmt->execute();
         
         // Fetch the user data as an associative array
-        $user = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $user = $stmt->fetch($this->connection::FETCH_ASSOC);
 
         // Return user data if found, otherwise return null
         return $user ?: null;
