@@ -59,6 +59,18 @@ class AuthTest extends Test
         $this->assertFalse($result);
     }
 
+    public function testLogoutUnsetsUserSession()
+    {
+        //mock the $_SESSION superglobal
+        $_SESSION = ['user_id' => 123];
+
+        // Call the logout method
+        $this->authService->logout();
+
+        // Assert that the user_id session variable is unset
+        $this->assertArrayNotHasKey('user_id', $_SESSION);
+    }
+
     private function insertUser($username, $password)
     {
         $insertQuery = "INSERT INTO " . User::TABLE . " (username, password) VALUES (:username, :password)";
