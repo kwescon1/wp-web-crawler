@@ -19,7 +19,7 @@ class AuthService implements AuthServiceInterface
         return isset($_SESSION['user_id']);
     }
 
-    public function login(string $username, string $password)
+    public function login(string $username, string $password): bool
     {
         try {
             $user = $this->userService->findUserByUsername($username);
