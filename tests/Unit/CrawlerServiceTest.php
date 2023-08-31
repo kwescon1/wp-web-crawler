@@ -25,7 +25,10 @@ class CrawlerServiceTest extends Test
         $this->httpClient = $this->createMock(\GuzzleHttp\Client::class);
         $this->storageService = $this->createMock(StorageService::class);
         $this->crawlService = new CrawlerService($this->httpClient, $this->storageService);
+    }
 
+    protected function tearDown(): void
+    {
         // Reset the database
         $this->testCase->refreshDatabase();
     }

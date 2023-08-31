@@ -23,7 +23,10 @@ class AuthTest extends Test
         $this->testCase = new TestCase;
         $this->userService = new UserService;
         $this->authService = new AuthService($this->userService);
+    }
 
+    protected function tearDown(): void
+    {
         // Reset the database
         $this->testCase->refreshDatabase();
     }
