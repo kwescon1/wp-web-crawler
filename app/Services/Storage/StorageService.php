@@ -14,12 +14,13 @@ class StorageService extends DatabaseService implements StorageServiceInterface
      * @var $outputFolderPath
      */
     private $outputFolderPath;
-    
 
-    public function __construct() {
+
+    public function __construct()
+    {
 
         // initialize the database connection needed for database operations in the child class.
-        parent::__construct(); 
+        parent::__construct();
 
         $this->outputFolderPath = dirname(dirname(dirname(__DIR__))) . '/output';
     }
@@ -33,9 +34,9 @@ class StorageService extends DatabaseService implements StorageServiceInterface
      */
     private $table = Result::TABLE;
 
-    public function storeResults($internalLinks)
+    public function storeResults($internalLinks): void
     {
-        $insertQuery = "INSERT INTO crawl_results (url) VALUES (:url)";
+        $insertQuery = "INSERT INTO {$this->table} (url) VALUES (:url)";
 
         $stmt = $this->connection->prepare($insertQuery);
 
@@ -49,9 +50,8 @@ class StorageService extends DatabaseService implements StorageServiceInterface
     {
 
         $selectQuery = "SELECT COUNT(*) FROM {$this->table}";
-        
-return $this->connection->query($selectQuery)->fetchColumn();
 
+        return $this->connection->query($selectQuery)->fetchColumn();
     }
 
     public function deleteLastCrawlResults(): bool
@@ -61,7 +61,6 @@ return $this->connection->query($selectQuery)->fetchColumn();
         $statement = $this->connection->prepare($deleteQuery);
 
         return $statement->execute();
-
     }
 
     private function verifySiteMapFileExists(): bool
@@ -81,7 +80,8 @@ return $this->connection->query($selectQuery)->fetchColumn();
     }
 
     // Create a sitemap.html file
-    public function createSitemapHtmlFile(array $internalLinks) {
+    public function createSitemapHtmlFile(array $internalLinks)
+    {
 
         $this->createOutputFolder($this->outputFolderPath);
 
@@ -95,11 +95,12 @@ return $this->connection->query($selectQuery)->fetchColumn();
         file_put_contents($this->outputFolderPath . '/' . self::SITEMAP, $sitemapContent);
     }
 
-     // Create a homepage.html file
-     public function createHomePageHtmlFile($data):void {
+    // Create a homepage.html file
+    public function createHomePageHtmlFile($data): void
+    {
 
         $this->createOutputFolder($this->outputFolderPath);
-        
+
         file_put_contents($this->outputFolderPath . '/' . self::HOMEPAGE, $data);
     }
 
@@ -117,5 +118,4 @@ return $this->connection->query($selectQuery)->fetchColumn();
             mkdir($outputFolderPath);
         }
     }
-
 }
