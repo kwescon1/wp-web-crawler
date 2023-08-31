@@ -5,117 +5,107 @@ namespace App\Services\Storage;
 use App\Models\Result;
 use App\Services\Database\DatabaseService;
 
-class StorageService extends DatabaseService implements StorageServiceInterface
-{
-
-    /**
-     * Define the path of the output folder 
-     * 
-     * @var $outputFolderPath
-     */
-    private $outputFolderPath;
+class StorageService extends DatabaseService implements StorageServiceInterface {
 
 
-    public function __construct()
-    {
-
-        // initialize the database connection needed for database operations in the child class.
-        parent::__construct();
-
-        $this->outputFolderPath = dirname(dirname(dirname(__DIR__))) . '/output';
-    }
+	/**
+	 * Define the path of the output folder
+	 *
+	 * @var $outputFolderPath
+	 */
+	private $outputFolderPath;
 
 
-    public const SITEMAP = "sitemap.html";
-    public const HOMEPAGE = "homepage.html";
+	public function __construct() {
 
-    /**
-     * @var $table
-     */
-    private $table = Result::TABLE;
+		// initialize the database connection needed for database operations in the child class.
+		parent::__construct();
 
-    public function storeResults($internalLinks): void
-    {
-        $insertQuery = "INSERT INTO {$this->table} (url) VALUES (:url)";
+		$this->outputFolderPath = dirname( dirname( dirname( __DIR__ ) ) ) . '/output';
+	}
 
-        $stmt = $this->connection->prepare($insertQuery);
 
-        foreach ($internalLinks as $link) {
-            $stmt->bindParam(':url', $link);
-            $stmt->execute();
-        }
-    }
+	public const SITEMAP  = 'sitemap.html';
+	public const HOMEPAGE = 'homepage.html';
 
-    public function getLastCrawlResultsCount()
-    {
+	/**
+	 * @var $table
+	 */
+	private $table = Result::TABLE;
 
-        $selectQuery = "SELECT COUNT(*) FROM {$this->table}";
+	public function storeResults( $internalLinks ): void {
+		$insertQuery = "INSERT INTO {$this->table} (url) VALUES (:url)";
 
-        return $this->connection->query($selectQuery)->fetchColumn();
-    }
+		$stmt = $this->connection->prepare( $insertQuery );
 
-    public function deleteLastCrawlResults(): bool
-    {
-        $deleteQuery = "DELETE FROM {$this->table} WHERE created_at < NOW()";
+		foreach ( $internalLinks as $link ) {
+			$stmt->bindParam( ':url', $link );
+			$stmt->execute();
+		}
+	}
 
-        $statement = $this->connection->prepare($deleteQuery);
+	public function getLastCrawlResultsCount() {
 
-        return $statement->execute();
-    }
+		$selectQuery = "SELECT COUNT(*) FROM {$this->table}";
 
-    private function verifySiteMapFileExists(): bool
-    {
+		return $this->connection->query( $selectQuery )->fetchColumn();
+	}
 
-        $this->createOutputFolder($this->outputFolderPath);
+	public function deleteLastCrawlResults(): bool {
+		$deleteQuery = "DELETE FROM {$this->table} WHERE created_at < NOW()";
 
-        return file_exists($this->outputFolderPath . '/' . self::SITEMAP);
-    }
+		$statement = $this->connection->prepare( $deleteQuery );
 
-    public function verifyHomePageFileExists(): bool
-    {
+		return $statement->execute();
+	}
 
-        $this->createOutputFolder($this->outputFolderPath);
+	private function verifySiteMapFileExists(): bool {
 
-        return file_exists($this->outputFolderPath . '/' . self::HOMEPAGE);
-    }
+		$this->createOutputFolder( $this->outputFolderPath );
 
-    // Create a sitemap.html file
-    public function createSitemapHtmlFile(array $internalLinks)
-    {
+		return file_exists( $this->outputFolderPath . '/' . self::SITEMAP );
+	}
 
-        $this->createOutputFolder($this->outputFolderPath);
+	public function verifyHomePageFileExists(): bool {
 
-        $sitemapContent = "<ul>";
-        foreach ($internalLinks as $link) {
+		$this->createOutputFolder( $this->outputFolderPath );
 
-            $sitemapContent .= "<li><a href='{$link}'>{$link}</a></li>";
-        }
+		return file_exists( $this->outputFolderPath . '/' . self::HOMEPAGE );
+	}
 
-        $sitemapContent .= "</ul>";
-        file_put_contents($this->outputFolderPath . '/' . self::SITEMAP, $sitemapContent);
-    }
+	// Create a sitemap.html file
+	public function createSitemapHtmlFile( array $internalLinks ) {
 
-    // Create a homepage.html file
-    public function createHomePageHtmlFile($data): void
-    {
+		$this->createOutputFolder( $this->outputFolderPath );
 
-        $this->createOutputFolder($this->outputFolderPath);
+		$sitemapContent = '<ul>';
+		foreach ( $internalLinks as $link ) {
 
-        file_put_contents($this->outputFolderPath . '/' . self::HOMEPAGE, $data);
-    }
+			$sitemapContent .= "<li><a href='{$link}'>{$link}</a></li>";
+		}
 
-    public function deleteSiteMapFile(): bool
-    {
-        if (!$this->verifySiteMapFileExists()) {
-            return false;
-        }
-        return unlink($this->outputFolderPath . '/' . self::SITEMAP);
-    }
+		$sitemapContent .= '</ul>';
+		file_put_contents( $this->outputFolderPath . '/' . self::SITEMAP, $sitemapContent );
+	}
 
-    private function createOutputFolder($outputFolderPath): void
-    {
-        if (!is_dir($outputFolderPath)) {
-            mkdir($outputFolderPath);
-        }
-    }
+	// Create a homepage.html file
+	public function createHomePageHtmlFile( $data ): void {
+
+		$this->createOutputFolder( $this->outputFolderPath );
+
+		file_put_contents( $this->outputFolderPath . '/' . self::HOMEPAGE, $data );
+	}
+
+	public function deleteSiteMapFile(): bool {
+		if ( ! $this->verifySiteMapFileExists() ) {
+			return false;
+		}
+		return unlink( $this->outputFolderPath . '/' . self::SITEMAP );
+	}
+
+	private function createOutputFolder( $outputFolderPath ): void {
+		if ( ! is_dir( $outputFolderPath ) ) {
+			mkdir( $outputFolderPath );
+		}
+	}
 }

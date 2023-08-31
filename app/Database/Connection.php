@@ -5,61 +5,58 @@ namespace App\Database;
 use PDO;
 use PDOException;
 
-class Connection
-{
-    
-    // Hold the single instance of the Connection class
-    private static $instance = null;
+class Connection {
 
-    // PDO instance for database interaction
-    private PDO $pdo;
 
-    // Character encoding for the database connection
-    private string $charset = 'utf8mb4';
+	// Hold the single instance of the Connection class
+	private static $instance = null;
 
-    // PDO options for configuring behavior
-    private const OPTIONS = [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    ];
+	// PDO instance for database interaction
+	private PDO $pdo;
 
-    // Private constructor to prevent direct instantiation
-    private function __construct()
-    {
-        // Get the configuration values from the included file
-        $config = require_once __DIR__ . '/../../config/database.php';
+	// Character encoding for the database connection
+	private string $charset = 'utf8mb4';
 
-        // Create a connection string to connect to the database using environment variables
-        $connectionString = "mysql:host={$config['db_host']};dbname={$config['db_name']};port={$config['db_port']}";
+	// PDO options for configuring behavior
+	private const OPTIONS = [
+		PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+		PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+	];
 
-        try {
-            // Establish a PDO connection using the connection, username, and password
-            $this->pdo = new PDO($connectionString, $config['db_user'], $config['db_password'], self::OPTIONS);
+	// Private constructor to prevent direct instantiation
+	private function __construct() {
+		// Get the configuration values from the included file
+		$config = require_once __DIR__ . '/../../config/database.php';
 
-            // Set the character encoding for the connection
-        $this->pdo->exec("SET NAMES '{$this->charset}'");
+		// Create a connection string to connect to the database using environment variables
+		$connectionString = "mysql:host={$config['db_host']};dbname={$config['db_name']};port={$config['db_port']}";
 
-        } catch (PDOException $exception) {
-            // If a connection error occurs, throw a PDOException
-            throw new PDOException($exception->getMessage(), (int) $exception->getCode());
-        }
-    }
+		try {
+			// Establish a PDO connection using the connection, username, and password
+			$this->pdo = new PDO( $connectionString, $config['db_user'], $config['db_password'], self::OPTIONS );
 
-    // Get a single instance of the Connection class
-    public static function getInstance(): self
-    {
-        // If no instance exists, create one
-        if (self::$instance === null) {
-            self::$instance = new self();
-        }
+			// Set the character encoding for the connection
+			$this->pdo->exec( "SET NAMES '{$this->charset}'" );
 
-        // Return the instance
-        return self::$instance;
-    }
+		} catch ( PDOException $exception ) {
+			// If a connection error occurs, throw a PDOException
+			throw new PDOException( $exception->getMessage(), (int) $exception->getCode() );
+		}
+	}
 
-    // Get the PDO instance for database operations
-    public function getPdo(): PDO
-    {
-        return $this->pdo;
-    }
+	// Get a single instance of the Connection class
+	public static function getInstance(): self {
+		// If no instance exists, create one
+		if ( self::$instance === null ) {
+			self::$instance = new self();
+		}
+
+		// Return the instance
+		return self::$instance;
+	}
+
+	// Get the PDO instance for database operations
+	public function getPdo(): PDO {
+		return $this->pdo;
+	}
 }

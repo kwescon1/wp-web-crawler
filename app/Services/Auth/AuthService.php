@@ -4,40 +4,36 @@ namespace App\Services\Auth;
 
 use App\Services\User\UserServiceInterface;
 
-class AuthService implements AuthServiceInterface
-{
+class AuthService implements AuthServiceInterface {
 
-    private $userService;
 
-    public function __construct(UserServiceInterface $userService)
-    {
-        $this->userService = $userService;
-    }
+	private $userService;
 
-    public function isLoggedIn(): bool
-    {
-        return isset($_SESSION['user_id']);
-    }
+	public function __construct( UserServiceInterface $userService ) {
+		$this->userService = $userService;
+	}
 
-    public function login(string $username, string $password): bool
-    {
-        try {
-            $user = $this->userService->findUserByUsername($username);
+	public function isLoggedIn(): bool {
+		return isset( $_SESSION['user_id'] );
+	}
 
-            if ($user && password_verify($password, $user['password'])) {
-                $_SESSION['user_id'] = $user['id'];
+	public function login( string $username, string $password ): bool {
+		try {
+			$user = $this->userService->findUserByUsername( $username );
 
-                return true;
-            }
+			if ( $user && password_verify( $password, $user['password'] ) ) {
+				$_SESSION['user_id'] = $user['id'];
 
-            return false;
-        } catch (\PDOException $exception) {
-            return $exception->getMessage();
-        }
-    }
+				return true;
+			}
 
-    public function logout(): void
-    {
-        unset($_SESSION['user_id']);
-    }
+			return false;
+		} catch ( \PDOException $exception ) {
+			return $exception->getMessage();
+		}
+	}
+
+	public function logout(): void {
+		unset( $_SESSION['user_id'] );
+	}
 }

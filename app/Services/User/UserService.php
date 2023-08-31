@@ -7,38 +7,38 @@ use App\Services\Database\DatabaseService;
 
 class UserService extends DatabaseService implements UserServiceInterface {
 
-    /**
-     * @var $table
-     */
-    private $table = User::TABLE;
+	/**
+	 * @var $table
+	 */
+	private $table = User::TABLE;
 
-    /**
-     * Find a user by their username
-     *
-     * @param string $username The username of the user to find.
-     * 
-     * @return array|null The user data if found, or null if not found.
-     */
-    public function findUserByUsername(string $username) : ? array{
+	/**
+	 * Find a user by their username
+	 *
+	 * @param string $username The username of the user to find.
+	 *
+	 * @return array|null The user data if found, or null if not found.
+	 */
+	public function findUserByUsername( string $username ) : ? array {
 
-        // Query the database to find a user with the given username
-        $query = "SELECT * FROM  {$this->table} WHERE username = :username";
+		// Query the database to find a user with the given username
+		$query = "SELECT * FROM  {$this->table} WHERE username = :username";
 
-        // Prepare the SQL statement
-        $stmt = $this->connection->prepare($query);
+		// Prepare the SQL statement
+		$stmt = $this->connection->prepare( $query );
 
-        // Bind the username parameter to the prepared statement
-        $stmt->bindValue(':username', $username, $this->connection::PARAM_STR);
+		// Bind the username parameter to the prepared statement
+		$stmt->bindValue( ':username', $username, $this->connection::PARAM_STR );
 
-        //execute statement
-        $stmt->execute();
-        
-        // Fetch the user data as an associative array
-        $user = $stmt->fetch($this->connection::FETCH_ASSOC);
+		// execute statement
+		$stmt->execute();
 
-        // Return user data if found, otherwise return null
-        return $user ?: null;
+		// Fetch the user data as an associative array
+		$user = $stmt->fetch( $this->connection::FETCH_ASSOC );
 
-    }
+		// Return user data if found, otherwise return null
+		return $user ?: null;
+
+	}
 }
 

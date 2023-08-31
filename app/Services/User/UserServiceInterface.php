@@ -2,7 +2,7 @@
 
 namespace App\Services\User;
 
-interface UserServiceInterface{
+interface UserServiceInterface {
 
-    public function findUserByUsername(string $username) :? array;
+	public function findUserByUsername( string $username) :? array;
 }

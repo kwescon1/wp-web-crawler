@@ -3,63 +3,90 @@
 namespace App\Services\Crawler;
 
 use App\Services\Storage\StorageServiceInterface;
+// use \GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 
-class CrawlerService implements CrawlerServiceInterface
-{
-
-    private $storageService;
-
-    public function __construct(StorageServiceInterface $storageService) {
-
-        $this->storageService = $storageService;
-    }
-
-    /**
-     * @param string $url
-     * 
-     * verify string is a url
-     * 
-     * @return bool
-     */
-    public function isValidUrl(string $url): bool
-    {
-        return filter_var($url, FILTER_VALIDATE_URL);
-    }
+class CrawlerService implements CrawlerServiceInterface {
 
 
-    /**
-     * @param string $url
-     * 
-     * crawl and extract internal hyperlinks
-     * 
-     * @return array|NULL
-     */
-    public function crawlHomePage(string $url): ?array
-    {
-        $client = new \GuzzleHttp\Client;
+	private $storageService;
+	private $client;
 
-        $res = $client->request('GET', $url);
+	public function __construct( ClientInterface $client, StorageServiceInterface $storageService ) {
 
-        // Use regular expression to extract internal links
-        preg_match_all('/<a[^>]+href="([^">]+)"[^>]*>/i', $res->getBody()->getContents(), $matches);
+		$this->storageService = $storageService;
+		$this->client         = $client;
+	}
 
-        if (empty($matches[1])) {
-            return null;
-        }
+	/**
+	 * @param string $url
+	 *
+	 * verify string is a url
+	 *
+	 * @return bool
+	 */
+	public function isValidUrl( string $url ): bool {
+		return filter_var( $url, FILTER_VALIDATE_URL );
+	}
 
-        $internalLinks = [];
 
-        foreach ($matches[1] as $link) {
-            //extract internal links
-            if (strpos($link, $url) == 0) {
-                //return full link
-                $internalLinks[] = $url . $link;
-            }
-        }
+	/**
+	 * @param string $url
+	 *
+	 * crawl and extract internal hyperlinks
+	 *
+	 * @return array|NULL
+	 */
+	public function crawlHomePage( string $url ): ?array {
 
-        //create hompage html file
-        $this->storageService->createHomePageHtmlFile($res->getBody());
+		$res = $this->client->request( 'GET', $url );
 
-        return $internalLinks;
-    }
+		$regex = '/<a[^>]+href="([^">]+)"[^>]*>/i';
+
+		// $regex = '/<a\s+href=["\'](\/[^"\']+)["\']/';
+
+		// Use regular expression to extract links
+		preg_match_all( $regex, $res->getBody()->getContents(), $matches );
+
+		// $regex = '#\bhttps?://[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/))#';
+
+		if ( empty( $matches[1] ) ) {
+			return null;
+		}
+
+		$internalLinks = [];
+
+		// $baseDomain = parse_url($url, PHP_URL_HOST);
+		// echo $baseDomain;
+
+		// print_r($matches);
+
+		// foreach ($matches[1] as $link) {
+		// echo $link;
+		// $linkParts = parse_url($url . $link);
+		// echo $linkParts['host'];
+
+		// if ($linkParts && isset($linkParts['host']) && $linkParts['host'] === $baseDomain) {
+		// $internalLinks[] = $link;
+		// }
+		// }
+
+		// print_r($internalLinks);
+		// die;
+
+		foreach ( $matches[1] as $link ) {
+			// extract internal links
+			// checks if the link starts with a slash /, which indicates that it's a relative internal link.
+
+			if ( strpos( $link, '/' ) === 0 ) {
+				// return full link
+				$internalLinks[] = $url . $link;
+			}
+		}
+
+		// create hompage html file
+		$this->storageService->createHomePageHtmlFile( $res->getBody() );
+
+		return $internalLinks;
+	}
 }

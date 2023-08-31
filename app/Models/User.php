@@ -3,16 +3,16 @@
 namespace App\Models;
 
 class User {
-    private $id;
-    private $username;
+	private $id;
+	private $username;
 
-    public const TABLE = 'users';
+	public const TABLE = 'users';
 
-    public function getId(): int{
-        return $this->id;
-    }
+	public function getId(): int {
+		return $this->id;
+	}
 
-    public function getUsername(): string {
-        return $this->username;
-    }
+	public function getUsername(): string {
+		return $this->username;
+	}
 }

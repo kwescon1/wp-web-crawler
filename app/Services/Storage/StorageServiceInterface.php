@@ -2,13 +2,13 @@
 
 namespace App\Services\Storage;
 
-interface StorageServiceInterface{
+interface StorageServiceInterface {
 
-    public function getLastCrawlResultsCount();
+	public function getLastCrawlResultsCount();
 
-    public function deleteLastCrawlResults(): bool;
+	public function deleteLastCrawlResults(): bool;
 
-    public function deleteSiteMapFile():bool;
+	public function deleteSiteMapFile():bool;
 
-    public function createHomePageHtmlFile($data):void;
+	public function createHomePageHtmlFile( $data):void;
 }

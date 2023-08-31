@@ -8,21 +8,20 @@ use App\Database\Connection;
 /**
  * The base service class for database operations.
  */
-abstract class DatabaseService
-{
-    /**
-     * The database connection instance.
-     *
-     * @var PDO
-     */
-    protected PDO $connection;
+abstract class DatabaseService {
 
-    /**
-     * Constructor to initialize the database connection.
-     */
-    public function __construct()
-    {
-        // Get the instance of the database connection using the Connection class.
-        $this->connection = Connection::getInstance()->getPdo();
-    }
+	/**
+	 * The database connection instance.
+	 *
+	 * @var PDO
+	 */
+	protected PDO $connection;
+
+	/**
+	 * Constructor to initialize the database connection.
+	 */
+	public function __construct() {
+		// Get the instance of the database connection using the Connection class.
+		$this->connection = Connection::getInstance()->getPdo();
+	}
 }
