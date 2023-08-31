@@ -8,6 +8,7 @@ use App\Services\Database\DatabaseService;
 class StorageService extends DatabaseService implements StorageServiceInterface {
 
 
+
 	/**
 	 * Define the path of the output folder
 	 *
@@ -101,6 +102,15 @@ class StorageService extends DatabaseService implements StorageServiceInterface 
 			return false;
 		}
 		return unlink( $this->outputFolderPath . '/' . self::SITEMAP );
+	}
+
+	public function viewSiteMapFile() {
+
+		if ( ! $this->verifySiteMapFileExists() ) {
+			return false;
+		}
+
+		return file_get_contents( $this->outputFolderPath . '/' . self::SITEMAP );
 	}
 
 	private function createOutputFolder( $outputFolderPath ): void {
