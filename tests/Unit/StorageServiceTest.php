@@ -84,7 +84,7 @@ class StorageServiceTest extends Test
 
     public function testCreateHomePageHtmlFile(): void
     {
-        $outputPath = dirname(dirname(__DIR__)) . '/output' . $this->storageServiceMock::HOMEPAGE;
+        $outputPath = dirname(dirname(__DIR__)) . '/output//' . $this->storageServiceMock::HOMEPAGE;
 
         $content = "Test homepage content";
 
@@ -103,7 +103,7 @@ class StorageServiceTest extends Test
 
     public function testCreateSitemapHtmlFile(): void
     {
-        $outputPath = dirname(dirname(__DIR__)) . '/output' . $this->storageServiceMock::SITEMAP;
+        $outputPath = dirname(dirname(__DIR__)) . '/output//' . $this->storageServiceMock::SITEMAP;
 
         $content = ['link1', 'link2', 'link3'];
 
