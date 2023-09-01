@@ -66,8 +66,8 @@ To install the WP-WEB-CRAWLER, follow these steps:
 
   ### Login Details
 
-  **Username:** test_user
-  **Password:** password
+  - **Username:** test_user
+  - **Password:** password
 
 ## Database management
 
