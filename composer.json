@@ -15,7 +15,8 @@
 		"sort-packages": true,
 		"allow-plugins": {
 			"dealerdirect/phpcodesniffer-composer-installer": true
-		}
+		},
+		"optimize-autoloader": true
 	},
 	"support": {
 		"issues": "https://github.com/wp-media/package-template/issues",
@@ -51,5 +52,9 @@
 		"phpcs": "phpcs --basepath=.",
 		"phpcs-changed": "./bin/phpcs-changed.sh",
 		"phpcs:fix": "phpcbf"
+	},
+	"require": {
+		"fabpot/goutte": "^4.0",
+		"guzzlehttp/guzzle": "^7.7"
 	}
 }
