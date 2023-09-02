@@ -81,4 +81,4 @@ To manage the database, use Adminer, which can be accessed at **[DB Management I
 
 ## Exploring How It Works
 
-For a more detailed explanation of how the WP-WEB-CRAWLER application functions, you can refer to our [explanation.md](explanation.md) document. This document provides insights into the internal workings of the application and can be a valuable resource for understanding its functionality.
+For a more detailed explanation of how the WP-WEB-CRAWLER application functions, you can refer to our [Explanation.md](explanation.md) document. This document provides insights into the internal workings of the application and can be a valuable resource for understanding its functionality.
