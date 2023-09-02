@@ -17,6 +17,7 @@ services:
     depends_on:
       - composer
     environment:
+      DB_CONNECTION: ${DB_CONNECTION}
       MYSQL_HOST: ${DB_HOST}
       MYSQL_PORT: ${DB_PORT}
       MYSQL_DATABASE: ${DB_DATABASE}
@@ -97,5 +98,27 @@ services:
     depends_on:
       - db
 
+    networks:
+      - wp
+
+  # setup cron
+  cron:
+    build:
+      context: .
+      dockerfile: ./docker-files/cron/Dockerfile
+    container_name: wp_cron
+    restart: always
+    tty: true
+    depends_on:
+      - app
+    environment:
+      DB_CONNECTION: ${DB_CONNECTION}
+      MYSQL_HOST: ${DB_HOST}
+      MYSQL_PORT: ${DB_PORT}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./:/var/www/wp-web-crawler
     networks:
       - wp
