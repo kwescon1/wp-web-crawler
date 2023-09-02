@@ -39,49 +39,46 @@ $crawlerService = new CrawlerService($guzzleClient, $storageService);
 // Initialize an error message variable
 $error = '';
 
+// Initialize success message variable
+$successMessage = '';
+
 // Handle crawl form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $url = $_POST['url'];
 
     // Verify url is valid
-    $isValidUrl = $crawlerService->isValidUrl($url);
-
-    if (!$isValidUrl) {
+    if (!$crawlerService->isValidUrl($url)) {
         $error = 'Enter a valid URL';
-    } else {
+    }
 
+    try {
         $internalLinks = $crawlerService->crawlHomePage($url);
 
         if (!$internalLinks || count($internalLinks) < 1) {
-            $error = 'Crawl unsuccessful';
-
-            echo '<script>alert("No crawl results");</script>';
+            $error = 'Crawl unsuccessful. No crawl results';
         } else {
-            try {
 
-
-                $lastestResultCount = $storageService->getLastCrawlResultsCount();
-
-                // There are no crawls
-                if ($latestResultCount > 0) {
-                    $storageService->deleteLastCrawlResults();
-
-                    // delete existing site map file
-                    $storageService->deleteSiteMapFile();
-                }
-
-                $storageService->storeResults($internalLinks);
-
-                // create sitemap file
-                $storageService->createSitemapHtmlFile($internalLinks);
-            } catch (\Exception $e) {
-                $error = 'Error saving data';
-                exit();
+            // Delete existing results and sitemap
+            $latestResultCount = $storageService->getLastCrawlResultsCount();
+            if ($latestResultCount > 0) {
+                $storageService->deleteLastCrawlResults();
+                $storageService->deleteSiteMapFile();
             }
+
+            // Store results and create a sitemap
+            $storageService->storeResults($internalLinks);
+            $storageService->createSitemapHtmlFile($internalLinks);
+
+            $successMessage = 'Crawl successful and data saved';
         }
+    } catch (\Exception $e) {
+        error_log($e->getMessage() . '\n', 3, '/var/log/error.log');
+        $error = 'Error during crawling or data storage';
     }
 }
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -129,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <div class="row">
                                         <div class="col-md-12 mb-4">
                                             <div class="form-outline">
-                                                <input type="text" id="url" name="url" class="form-control" required />
+                                                <input type="url" id="url" name="url" class="form-control" required />
                                                 <label class="form-label" for="url">Enter url to crawl</label>
                                             </div>
                                         </div>
@@ -184,15 +181,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     <script>
         <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($error)) : ?>
-            alert("Crawl successful!");
+            alert("<?php echo $successMessage; ?>");
         <?php elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($error)) : ?>
-            alert("Crawl unsuccessful. Please check the URL and try again.");
+            alert("<?php echo $error; ?>");
         <?php endif; ?>
 
         document.getElementById("viewResultsBtn").addEventListener("click", function() {
             $('#resultsModal').modal('show');
         });
     </script>
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"></script>
 </body>
