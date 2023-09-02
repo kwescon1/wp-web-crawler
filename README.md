@@ -50,9 +50,9 @@ To install the WP-WEB-CRAWLER, follow these steps:
 
    - docker-compose up -d
 
-8. SSH into the optix app container
+8. SSH into the wp-web-crawler app container
 
-   - docker exec -it -u ubuntu optix /bin/bash
+   - docker exec -it -u ubuntu wp-web-crawler /bin/bash
 
 9. Run the following commands
 
@@ -78,3 +78,7 @@ To manage the database, use Adminer, which can be accessed at **[DB Management I
 - Username: wp_user
 - Password: wp_root
 - Database: wp
+
+## Exploring How It Works
+
+For a more detailed explanation of how the WP-WEB-CRAWLER application functions, you can refer to our [explanation.md](explanation.md) document. This document provides insights into the internal workings of the application and can be a valuable resource for understanding its functionality.
