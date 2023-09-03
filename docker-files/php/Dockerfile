@@ -3,6 +3,12 @@ FROM php:7.4-fpm
 # Set working directory
 WORKDIR /var/www/wp-web-crawler
 
+# Create an error log file
+RUN touch /var/log/error.log
+
+# Make the file readable, writable, and executable
+RUN chmod 777 /var/log/error.log
+
 # Install dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
@@ -27,6 +33,11 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
 RUN docker-php-ext-install exif pcntl bcmath gd pdo pdo_mysql sockets
+
+# Install APCu extension for caching
+RUN pecl install apcu \
+    && docker-php-ext-enable apcu
+
 
 # add user ubuntu, add group ubuntu
 RUN useradd -rm -d /home/ubuntu -s /bin/bash -g root -G sudo,www-data -u 1000 ubuntu
