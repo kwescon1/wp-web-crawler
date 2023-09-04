@@ -26,4 +26,25 @@ abstract class DatabaseService implements DatabaseServiceInterface
 		// Get the instance of the database connection using the Connection class.
 		$this->connection = Connection::getInstance()->getPdo();
 	}
+
+
+	/**
+	 * Retrieves the current database connection instance.
+	 *
+	 * @return PDO The active PDO database connection.
+	 */
+	public function getConnection(): PDO
+	{
+		return $this->connection;
+	}
+
+	/**
+	 * Sets the database connection instance.
+	 *
+	 * @param PDO $connection The PDO database connection to set.
+	 */
+	public function setConnection(PDO $connection): void
+	{
+		$this->connection = $connection;
+	}
 }
