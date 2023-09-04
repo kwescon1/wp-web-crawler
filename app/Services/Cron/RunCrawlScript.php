@@ -10,10 +10,10 @@ use \GuzzleHttp\Client;
 use App\Services\Storage\StorageService;
 use App\Services\Crawler\CrawlerService;
 
-$client = new Client;
-$storage = new StorageService;
-$crawler = new CrawlerService($client, $storage);
-$cronScript = new CronScript($crawler);
+$client     = new Client();
+$storage    = new StorageService();
+$crawler    = new CrawlerService( $client, $storage );
+$cronScript = new CronScript( $crawler );
 
 
 $cronScript->hourlyCrawlCron();

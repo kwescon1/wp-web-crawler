@@ -8,8 +8,8 @@ use App\Database\Connection;
 /**
  * The base service class for database operations.
  */
-abstract class DatabaseService implements DatabaseServiceInterface
-{
+abstract class DatabaseService implements DatabaseServiceInterface {
+
 
 	/**
 	 * The database connection instance.
@@ -21,9 +21,8 @@ abstract class DatabaseService implements DatabaseServiceInterface
 	/**
 	 * Constructor to initialize the database connection.
 	 */
-	public function __construct()
-	{
-		// Get the instance of the database connection using the Connection class.
+	public function __construct() {
+		 // Get the instance of the database connection using the Connection class.
 		$this->connection = Connection::getInstance()->getPdo();
 	}
 
@@ -33,8 +32,7 @@ abstract class DatabaseService implements DatabaseServiceInterface
 	 *
 	 * @return PDO The active PDO database connection.
 	 */
-	public function getConnection(): PDO
-	{
+	public function getConnection(): PDO {
 		return $this->connection;
 	}
 
@@ -43,8 +41,7 @@ abstract class DatabaseService implements DatabaseServiceInterface
 	 *
 	 * @param PDO $connection The PDO database connection to set.
 	 */
-	public function setConnection(PDO $connection): void
-	{
+	public function setConnection( PDO $connection ): void {
 		$this->connection = $connection;
 	}
 }

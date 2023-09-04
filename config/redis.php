@@ -1,19 +1,19 @@
 <?php
 
 return [
-    /*
+	/*
 	|--------------------------------------------------------------------------
 	| Redis Scheme
 	|--------------------------------------------------------------------------
 	|
 	| This value is the scheme used to connect to the Redis database. Common
-    | schemes include 'tcp' (default) and 'unix' for Unix domain sockets.
+	| schemes include 'tcp' (default) and 'unix' for Unix domain sockets.
 	|
 	*/
 
-    'redis_scheme'   => getenv('REDIS_SCHEME') ?: 'tcp',
+	'redis_scheme'   => getenv( 'REDIS_SCHEME' ) ?: 'tcp',
 
-    /*
+	/*
 	|--------------------------------------------------------------------------
 	| Redis Host
 	|--------------------------------------------------------------------------
@@ -22,9 +22,9 @@ return [
 	|
 	*/
 
-    'redis_host'     => getenv('REDIS_HOST') ?: 'redis',
+	'redis_host'     => getenv( 'REDIS_HOST' ) ?: 'redis',
 
-    /*
+	/*
 	|--------------------------------------------------------------------------
 	| Redis Port
 	|--------------------------------------------------------------------------
@@ -33,9 +33,9 @@ return [
 	|
 	*/
 
-    'redis_port'     => getenv('REDIS_PORT') ?: '6379',
+	'redis_port'     => getenv( 'REDIS_PORT' ) ?: '6379',
 
-    /*
+	/*
 	|--------------------------------------------------------------------------
 	| Redis Password
 	|--------------------------------------------------------------------------
@@ -44,6 +44,6 @@ return [
 	|
 	*/
 
-    'redis_password' => getenv('REDIS_PASSWORD') ?: '',
+	'redis_password' => getenv( 'REDIS_PASSWORD' ) ?: '',
 
 ];

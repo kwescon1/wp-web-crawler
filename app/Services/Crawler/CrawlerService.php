@@ -6,87 +6,84 @@ use App\Services\Storage\StorageServiceInterface;
 // use \GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 
-class CrawlerService implements CrawlerServiceInterface
-{
+class CrawlerService implements CrawlerServiceInterface {
 
 
 
-    private $storageService;
-    private $client;
 
-    public function __construct(ClientInterface $client, StorageServiceInterface $storageService)
-    {
+	private $storageService;
+	private $client;
 
-        $this->storageService = $storageService;
-        $this->client         = $client;
-    }
+	public function __construct( ClientInterface $client, StorageServiceInterface $storageService ) {
 
-
-    /**
-     * @param string $url
-     *
-     * verify string is a url
-     *
-     * @return bool
-     */
-    public function isValidUrl(string $url): bool
-    {
-        return filter_var($url, FILTER_VALIDATE_URL);
-    }
+		$this->storageService = $storageService;
+		$this->client         = $client;
+	}
 
 
-    /**
-     * @param string $url
-     *
-     * crawl and extract internal hyperlinks
-     * 
-     * since we are exctracting content from just the homepage
-     * parse the incoming url
-     * extract the host which is the root url(homepage)
-     * crawl the homepage
-     *
-     * @return array|NULL
-     */
+	/**
+	 * @param string $url
+	 *
+	 * verify string is a url
+	 *
+	 * @return bool
+	 */
+	public function isValidUrl( string $url ): bool {
+		return filter_var( $url, FILTER_VALIDATE_URL );
+	}
 
-    public function crawlHomePage(string $url): ?array
-    {
 
-        $parsedUrl = parse_url($url);
+	/**
+	 * @param string $url
+	 *
+	 * crawl and extract internal hyperlinks
+	 *
+	 * since we are exctracting content from just the homepage
+	 * parse the incoming url
+	 * extract the host which is the root url(homepage)
+	 * crawl the homepage
+	 *
+	 * @return array|NULL
+	 */
 
-        $rootUrl = $parsedUrl['scheme'] . '://' . $parsedUrl['host'];
+	public function crawlHomePage( string $url ): ?array {
 
-        $res = $this->client->request('GET', $rootUrl);
+		$parsedUrl = parse_url( $url );
 
-        // This regex extracts URLs from HTML anchor (a) tags.
-        $regex = '/<a\s+(?:[^>]*?\s+)?href="([^"]*)"/i';
+		$rootUrl = $parsedUrl['scheme'] . '://' . $parsedUrl['host'];
 
-        // Use regular expression to extract links
-        preg_match_all($regex, $res->getBody()->getContents(), $matches);
+		$res = $this->client->request( 'GET', $rootUrl );
 
-        if (empty($matches[1])) {
-            return null;
-        }
+		// This regex extracts URLs from HTML anchor (a) tags.
+		$regex = '/<a\s+(?:[^>]*?\s+)?href="([^"]*)"/i';
 
-        $internalLinks = [];
+		// Use regular expression to extract links
+		preg_match_all( $regex, $res->getBody()->getContents(), $matches );
 
-        foreach ($matches[1] as $link) {
-            // extract internal links
-            // checks if the link starts with a slash /, which indicates that it's a relative internal link.
+		if ( empty( $matches[1] ) ) {
+			return null;
+		}
 
-            if (strpos($link, '/') === 0) {
-                // return full link
-                $internalLinks[] = $rootUrl . $link;
-            }
-        }
+		$internalLinks = [];
 
-        // create hompage html file
-        $this->storageService->createHomePageHtmlFile($res->getBody());
+		foreach ( $matches[1] as $link ) {
+			// extract internal links
+			// checks if the link starts with a slash /, which indicates that it's a relative internal link.
 
-        $path = dirname(dirname(dirname(__DIR__))) . '/output' . '/url.txt';
-        //store url in file for cron purposes
-        file_put_contents($path, $rootUrl);
+			if ( strpos( $link, '/' ) === 0 ) {
+				// return full link
+				$internalLinks[] = $rootUrl . $link;
+			}
+		}
 
-        // remove duplicate links
-        return array_unique($internalLinks);
-    }
+		// create hompage html file
+		$this->storageService->createHomePageHtmlFile( $res->getBody() );
+
+		$path = dirname( dirname( dirname( __DIR__ ) ) ) . '/output' . '/url.txt';
+		// store url in file for cron purposes
+		file_put_contents( $path, $rootUrl );
+
+		// remove duplicate links
+		return array_unique( $internalLinks );
+	}
 }

@@ -5,41 +5,38 @@ namespace App\Services\Cron;
 use App\Services\Crawler\CrawlerServiceInterface;
 use App\Services\Database\RedisService;
 
-class CronScript
-{
-    private $crawlerService;
-    private $redisClient;
+class CronScript {
 
-    public function __construct(CrawlerServiceInterface $crawlerService)
-    {
+	private $crawlerService;
+	private $redisClient;
 
-        $this->crawlerService = $crawlerService;
-        $this->redisClient = new RedisService;
-    }
+	public function __construct( CrawlerServiceInterface $crawlerService ) {
 
-    public function hourlyCrawlCron()
-    {
-        $cache = $this->redisClient->getKeyValue($this->crawlerService::CRAWL_CAHCE_KEY);
+		$this->crawlerService = $crawlerService;
+		$this->redisClient    = new RedisService();
+	}
 
-        //if cache key value is false, no need to run hourly cron
-        if (!$cache) {
-            return;
-        }
+	public function hourlyCrawlCron() {
+		$cache = $this->redisClient->getKeyValue( $this->crawlerService::CRAWL_CAHCE_KEY );
 
-        $path = dirname(dirname(dirname(__DIR__))) . '/output' . '/url.txt';
-        //store url in file for cron purposes
-        $url = file_get_contents($path);
+		// if cache key value is false, no need to run hourly cron
+		if ( ! $cache ) {
+			return;
+		}
 
+		$path = dirname( dirname( dirname( __DIR__ ) ) ) . '/output' . '/url.txt';
+		// store url in file for cron purposes
+		$url = file_get_contents( $path );
 
-        $string = "Running cron at. This was successful " . date("Y-m-d H:i:s");
+		$string = 'Running cron at. This was successful ' . date( 'Y-m-d H:i:s' );
 
-        try {
-            $this->crawlerService->crawlHomePage($url);
+		try {
+			$this->crawlerService->crawlHomePage( $url );
 
-            // Log crawl output to /var/log/cron.log
-            return error_log("Crawl result: " . print_r($string, true), 3, '/var/log/cron.log');
-        } catch (\Exception $e) {
-            error_log("Cron failed. Below is the error \n" . $e->getMessage());
-        }
-    }
+			// Log crawl output to /var/log/cron.log
+			return error_log( 'Crawl result: ' . print_r( $string, true ), 3, '/var/log/cron.log' );
+		} catch ( \Exception $e ) {
+			error_log( "Cron failed. Below is the error \n" . $e->getMessage() );
+		}
+	}
 }

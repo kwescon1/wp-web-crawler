@@ -2,6 +2,6 @@
 
 namespace App\Services\Database;
 
-interface DatabaseServiceInterface
-{
+interface DatabaseServiceInterface {
+
 }
