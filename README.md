@@ -82,3 +82,11 @@ To manage the database, use Adminer, which can be accessed at **[DB Management I
 ## Exploring How It Works
 
 For a more detailed explanation of how the WP-WEB-CRAWLER application functions, you can refer to our [Explanation.md](Explanation.md) document. This document provides insights into the internal workings of the application and can be a valuable resource for understanding its functionality.
+
+## Note on Responsible Web Crawling
+
+Before initiating web crawling using WP-WEB-CRAWLER or any other web crawling tool, it's essential to be aware that some websites may explicitly prohibit or restrict crawling through the use of robots.txt files or other methods.
+
+Always respect the website's terms of service and robots.txt guidelines when performing web crawling activities. Unauthorized or aggressive crawling can put unnecessary strain on web servers and may be considered unethical or even illegal.
+
+WP-WEB-CRAWLER is designed to assist administrators in enhancing their website's SEO rankings through responsible and ethical crawling practices. Please use this tool responsibly and ensure that you have the necessary permissions to crawl a website.
