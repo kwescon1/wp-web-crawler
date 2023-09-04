@@ -5,6 +5,7 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 use App\Services\Auth\AuthService;
 use App\Services\User\UserService;
+use App\Services\Database\RedisService;
 use App\Services\Crawler\CrawlerService;
 use App\Services\Storage\StorageService;
 
@@ -33,6 +34,9 @@ if (isset($_POST['logout'])) {
 $storageService = new StorageService();
 $guzzleClient   = new \GuzzleHttp\Client();
 
+// Instantiate redis service
+$redis = new RedisService();
+
 // Instantiate the CrawlerService class
 $crawlerService = new CrawlerService($guzzleClient, $storageService);
 
@@ -41,6 +45,8 @@ $error = '';
 
 // Initialize success message variable
 $successMessage = '';
+
+$crawlTriggered = false;
 
 // Handle crawl form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -68,6 +74,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Store results and create a sitemap
             $storageService->storeResults($internalLinks);
             $storageService->createSitemapHtmlFile($internalLinks);
+
+            $crawlTriggered = true;
+
+            $redis->setKeyValue($crawlerService::CRAWL_CAHCE_KEY, $crawlerService::CRAWL_CACHE_SECONDS, $crawlTriggered);
 
             $successMessage = 'Crawl successful and data saved';
         }
@@ -160,24 +170,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="resultsModalLabel">View Results</h5>
+                    <h5 class="modal-title" id="resultsModalLabel">Sitemap</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <?php
-                    $sitemapContent = $storageService->viewSiteMapFile();
-                    if ($sitemapContent !== false) {
-                        echo $sitemapContent;
-                    } else {
-                        echo '<div class="alert alert-info">No available sitemap.</div>';
-                    }
-                    ?>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
+                <div class="modal-body"></div>
+                <?php
+                $sitemapContent = $storageService->viewSiteMapFile();
+                if ($sitemapContent !== false) {
+                    echo $sitemapContent;
+                } else {
+                    echo '<div class="alert alert-info">No available sitemap.</div>';
+                }
+                ?>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
+    </div>
     </div>
     <script>
         <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($error)) : ?>
