@@ -3,19 +3,29 @@
 namespace App\Services\Cron;
 
 use App\Services\Crawler\CrawlerServiceInterface;
+use App\Services\Database\RedisService;
 
 class CronScript
 {
     private $crawlerService;
+    private $redisClient;
 
     public function __construct(CrawlerServiceInterface $crawlerService)
     {
 
         $this->crawlerService = $crawlerService;
+        $this->redisClient = new RedisService;
     }
 
     public function hourlyCrawlCron()
     {
+        $cache = $this->redisClient->getKeyValue($this->crawlerService::CRAWL_CAHCE_KEY);
+
+        //if cache key value is false, no need to run hourly cron
+        if (!$cache) {
+            return;
+        }
+
         $path = dirname(dirname(dirname(__DIR__))) . '/output' . '/url.txt';
         //store url in file for cron purposes
         $url = file_get_contents($path);
