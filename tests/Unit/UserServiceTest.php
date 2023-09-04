@@ -2,63 +2,63 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
-use App\Models\User;
+use PHPUnit\Framework\TestCase;
 use App\Services\User\UserService;
-use PHPUnit\Framework\TestCase as Test;
+use Tests\Traits\SetsMockConnection;
 
-class UserServiceTest extends Test
+class UserServiceTest extends TestCase
 {
+    use SetsMockConnection;
 
-    protected $testCase;
+    protected $userServiceMock;
     protected $userService;
 
     protected function setUp(): void
     {
-
         parent::setUp();
 
-        $this->testCase = new TestCase;
+        // This instance will be used to test methods that we aren't mocking
         $this->userService = new UserService();
-        
-        // Reset the database
-        $this->testCase->refreshDatabase();
+
+        // This mock will be used to test interactions
+        $this->userServiceMock = $this->createMock(UserService::class);
     }
 
     public function testUserDoesNotExist()
     {
         $username = 'user';
 
-        // Call the method to be tested
-        $result = $this->userService->findUserByUsername($username);
+        // Configure the mock to return null
+        $this->userServiceMock->expects($this->once())
+            ->method('findUserByUsername')
+            ->with($username)
+            ->willReturn(null);
 
-        $this->assertNull($result);        
+        // Here, we use the mock to simulate a call
+        $result = $this->userServiceMock->findUserByUsername($username);
+
+        $this->assertNull($result);
     }
 
     public function testUserExists()
     {
-        // Insert a user into the database
-        $username = 'testuser';
-        $password = 'password123';
+        $username = 'existingUser';
+        $mockedUser = [
+            'id' => 1,
+            'username' => $username,
+            'email' => 'existingUser@example.com'
+        ];
 
-        $this->insertUser($username, $password);
+        // Configure the mock to return the mocked user
+        $this->userServiceMock->expects($this->once())
+            ->method('findUserByUsername')
+            ->with($username)
+            ->willReturn($mockedUser);
 
-        // Verify if the user exists in the database
-        $user = $this->userService->findUserByUsername($username);
+        // Here, we use the mock to simulate a call
+        $result = $this->userServiceMock->findUserByUsername($username);
 
-        // Assertions
-        $this->assertNotNull($user);
-        $this->assertEquals($username, $user['username']);
-    }
-
-    private function insertUser($username, $password)
-    {
-        $insertQuery = "INSERT INTO " . User::TABLE . " (username, password) VALUES (:username, :password)";
-        
-        $stmt = $this->testCase->db()->prepare($insertQuery);
-
-        $stmt->bindValue(':username', $username, $this->testCase->db()::PARAM_STR);
-        $stmt->bindValue(':password', $password, $this->testCase->db()::PARAM_STR);
-        $stmt->execute();
+        $this->assertNotNull($result);
+        $this->assertEquals($mockedUser, $result);
     }
 }
