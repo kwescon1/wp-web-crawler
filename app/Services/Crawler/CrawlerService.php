@@ -14,14 +14,13 @@ class CrawlerService implements CrawlerServiceInterface
     private $storageService;
     private $client;
 
-    public const CRAWL_CAHCE_KEY = 'crawl';
-
     public function __construct(ClientInterface $client, StorageServiceInterface $storageService)
     {
 
         $this->storageService = $storageService;
         $this->client         = $client;
     }
+
 
     /**
      * @param string $url
