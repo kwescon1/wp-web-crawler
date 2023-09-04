@@ -2,7 +2,6 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
 use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use PHPUnit\Framework\TestCase as Test;
 use App\Services\Crawler\CrawlerService;
@@ -21,16 +20,9 @@ class CrawlerServiceTest extends Test
     {
         parent::setUp();
 
-        $this->testCase = new TestCase;
         $this->httpClient = $this->createMock(\GuzzleHttp\Client::class);
         $this->storageService = $this->createMock(StorageService::class);
         $this->crawlService = new CrawlerService($this->httpClient, $this->storageService);
-    }
-
-    protected function tearDown(): void
-    {
-        // Reset the database
-        $this->testCase->refreshDatabase();
     }
 
     public function testIsValidUrl()

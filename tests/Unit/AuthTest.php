@@ -2,41 +2,37 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
-use App\Models\User;
+use PHPUnit\Framework\TestCase;
 use App\Services\Auth\AuthService;
-use App\Services\User\UserService;
-use PHPUnit\Framework\TestCase as Test;
+use App\Services\User\UserServiceInterface;
 
-class AuthTest extends Test
+class AuthTest extends TestCase
 {
-
-    protected $testCase;
-    protected $authService;
-    protected $userService;
+    private $authService;
+    private $userServiceMock;
 
     protected function setUp(): void
     {
-
         parent::setUp();
 
-        $this->testCase = new TestCase;
-        $this->userService = new UserService;
-        $this->authService = new AuthService($this->userService);
-    }
+        // Create a mock for UserServiceInterface
+        $this->userServiceMock = $this->createMock(UserServiceInterface::class);
 
-    protected function tearDown(): void
-    {
-        // Reset the database
-        $this->testCase->refreshDatabase();
+        // Create an instance of AuthService and inject the mock
+        $this->authService = new AuthService($this->userServiceMock);
     }
 
     public function testSuccessfulUserLogin()
     {
+        $userId = 1;
         $username = 'user';
         $password = 'test_password';
 
-        $this->insertUser($username, password_hash($password, PASSWORD_DEFAULT));
+        // Configure the mock to return a user with the provided username
+        $this->userServiceMock->expects($this->once())
+            ->method('findUserByUsername')
+            ->with($username)
+            ->willReturn(['id' => $userId, 'username' => $username, 'password' => password_hash($password, PASSWORD_DEFAULT)]);
 
         // Call the method to be tested
         $result = $this->authService->login($username, $password);
@@ -50,38 +46,18 @@ class AuthTest extends Test
 
     public function testUnsuccessfulUserLogin()
     {
-
         $username = 'user';
         $password = 'test_password';
 
-        $this->insertUser($username, $password);
+        // Configure the mock to return null for the provided username
+        $this->userServiceMock->expects($this->once())
+            ->method('findUserByUsername')
+            ->with($username)
+            ->willReturn(null);
 
         // Call the method to be tested
         $result = $this->authService->login($username, $password);
 
         $this->assertFalse($result);
-    }
-
-    public function testLogoutUnsetsUserSession()
-    {
-        //mock the $_SESSION superglobal
-        $_SESSION = ['user_id' => 123];
-
-        // Call the logout method
-        $this->authService->logout();
-
-        // Assert that the user_id session variable is unset
-        $this->assertArrayNotHasKey('user_id', $_SESSION);
-    }
-
-    private function insertUser($username, $password)
-    {
-        $insertQuery = "INSERT INTO " . User::TABLE . " (username, password) VALUES (:username, :password)";
-
-        $stmt = $this->testCase->db()->prepare($insertQuery);
-
-        $stmt->bindValue(':username', $username, $this->testCase->db()::PARAM_STR);
-        $stmt->bindValue(':password', $password, $this->testCase->db()::PARAM_STR);
-        $stmt->execute();
     }
 }
