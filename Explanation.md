@@ -48,6 +48,8 @@ The decision to build a PHP app was driven by several key factors. Building a PH
 
      - Cron Service (cron) : A dedicated service for the purpose of executing cron jobs in the application.
 
+     - Redis Service (redis): A specialized service responsible for managing Redis, an in-memory data store, to enhance caching and real-time data processing within the application.
+
 ## Code Explanation
 
 The solution comprises the following main components:
@@ -57,6 +59,22 @@ The solution comprises the following main components:
 2. **Admin Page (`dashboard.php`):** This page provides a form and a button to trigger the crawl. On submission, the crawl process is initiated, and the results are stored. Also, on the page, there is a button that enables the admin to view results after crawling and there is a logout button to enable admins logout.
 
 3. **Guest Page (`index.php`):** This page is the first page that a user accesses if not logged into the system. In essence, it is a page for guests. This page provides a button that can be used to view the latest content of the current sitemap.
+
+4. **AuthService Class (`AuthService.php`):** The `AuthService` class is responsible for handling user authentication within the application. It provides methods for checking if a user is currently logged in, performing user login, and user logout.
+
+5. **CrawlerService Class (`CrawlerService.php`):** The `CrawlerService` class is responsible for web crawling and extracting internal hyperlinks from a given URL. It utilizes GuzzleHttp for making HTTP requests and a regular expression-based approach to extract links from HTML content.
+
+6. **CronScript Class (`CronScript.php`):** The `CronScript` class is responsible for executing an hourly cron job to trigger web crawling if certain conditions are met. It uses the `CrawlerService` and `RedisService` to control the execution of the crawl process.
+
+7. **Executing Cron (`RunCrawlScript.php`):** The entry point for triggering the hourly cron job to crawl a website. I
+
+8. **DatabaseService Class(`DatabaseService.php`):** The `DatabaseService` class is an abstract base class that provides a foundation for performing database-related operations. It serves as an intermediary layer between other services or classes that need to interact with the database and the actual database connection.
+
+9. **RedisService Class (`RedisService.php`):** The `RedisService` class is responsible for handling Redis operations within the application. Redis is a fast, in-memory data store often used for caching and other data storage needs.
+
+10. **StorageService Class (`StorageService.php`):** The `StorageService` class is responsible for managing storage-related operations in the application. It handles the storage of crawled data, such as URLs, and the creation of HTML files for the sitemap and homepage.
+
+11. **UserService Class (`UserService.php`):** The `UserService` class is responsible for handling user-related operations within the application. It primarily deals with interactions related to the `User` model and database queries.
 
 ## Achieving the Desired Outcome
 
