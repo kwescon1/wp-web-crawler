@@ -1,2 +1,2 @@
 # add to crontab -e
-* * * * * /usr/local/bin/php /var/www/wp-web-crawler/app/Services/Cron/RunCrawlScript.php >> /var/log/cron.log 2>&1
+0 * * * * /usr/local/bin/php /var/www/wp-web-crawler/app/Services/Cron/RunCrawlScript.php >> /var/log/cron.log 2>&1
