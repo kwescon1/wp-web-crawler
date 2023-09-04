@@ -34,9 +34,9 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 # Install PHP extensions
 RUN docker-php-ext-install exif pcntl bcmath gd pdo pdo_mysql sockets
 
-# Install APCu extension for caching
-RUN pecl install apcu \
-    && docker-php-ext-enable apcu
+# Install Redis extentions
+RUN pecl install redis \
+    && docker-php-ext-enable redis
 
 
 # add user ubuntu, add group ubuntu
