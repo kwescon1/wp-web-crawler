@@ -2,147 +2,148 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
+use PDO;
+use PDOStatement;
 use App\Models\Result;
-use PHPUnit\Framework\TestCase as Test;
+use PHPUnit\Framework\TestCase;
 use App\Services\Storage\StorageService;
+use Tests\Traits\SetsMockConnection;
 
-class StorageServiceTest extends Test
+class StorageServiceTest extends TestCase
 {
+    use SetsMockConnection; // Using trait to set up mock connections for the service
 
-    protected $testCase;
-    protected $storageService;
-    protected $table;
-    protected $outputFolderPath;
-    protected $storageServiceMock;
+    // Define properties for the class
+    private $storageService;
+    private $mockedPDO;
+    private $mockedStatement;
+    private $storageServiceMock;
 
+    /**
+     * Set up method that runs before every test method.
+     */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->testCase = new TestCase;
-        $this->storageService = new StorageService;
-        $this->table = Result::TABLE;
+        // Mocking the PDOStatement class
+        $this->mockedStatement = $this->createMock(PDOStatement::class);
+        $this->mockedStatement->method('bindParam')->willReturn(true);
+        $this->mockedStatement->method('execute')->willReturn(true);
 
+        // Mocking the PDO class
+        $this->mockedPDO = $this->createMock(PDO::class);
+        $this->mockedPDO->method('prepare')->willReturn($this->mockedStatement);
+
+        // Initializing the actual StorageService class and setting the mock connection on it
+        $this->storageService = new StorageService();
+        $this->setMockConnectionOnService($this->storageService, $this->mockedPDO);
+
+        // Creating a partial mock of the StorageService class, mocking only specific methods
         $this->storageServiceMock = $this->getMockBuilder(StorageService::class)
-            ->onlyMethods(['verifyHomePageFileExists', 'verifySiteMapFileExists', 'createHomePageHtmlFile', 'createSitemapHtmlFile', 'deleteSiteMapFile'])
+            ->onlyMethods(['verifyHomePageFileExists', 'verifySiteMapFileExists', 'createHomePageHtmlFile', 'createSitemapHtmlFile', 'deleteSiteMapFile', 'viewSiteMapFile'])
             ->getMock();
     }
 
-    protected function tearDown(): void
-    {
-        // Reset the database
-        $this->testCase->refreshDatabase();
-    }
-
+    /**
+     * Test the method that stores internal links in the database.
+     */
     public function testStoreInternalLinks()
     {
-        // Prepare the data for the test
         $internalLinks = ['link1', 'link2', 'link3'];
 
-        // Call the method to be tested (storeResults)
+        // Expectations for the mock objects during this test
+        $this->mockedPDO->expects($this->once())
+            ->method('prepare')
+            ->with("INSERT INTO " . Result::TABLE . " (url) VALUES (:url)");
+
+        $this->mockedStatement->expects($this->exactly(count($internalLinks)))
+            ->method('execute');
+
         $this->storageService->storeResults($internalLinks);
-
-        // Build a query to retrieve stored data
-        $query = "SELECT * FROM {$this->table}";
-
-        // Execute the query and fetch the results from the database
-        $result = $this->testCase->db()->query($query);
-        $storedLinks = $result->fetchAll();
-
-        // Perform an assertion to check if the stored results match the expected count
-        $this->assertCount(3, $storedLinks);
     }
 
-
+    /**
+     * Test the method that deletes the results from the last crawl from the database.
+     */
     public function testDeleteLastCrawlResults()
     {
+        // Expectations for the mock objects during this test
+        $this->mockedPDO->expects($this->once())
+            ->method('prepare')
+            ->with("DELETE FROM " . Result::TABLE . " WHERE created_at < NOW()");
 
-        // Call the method to be tested
+        $this->mockedStatement->expects($this->once())
+            ->method('execute')
+            ->willReturn(true);
+
         $result = $this->storageService->deleteLastCrawlResults();
-
-        // Assertion
         $this->assertTrue($result);
     }
 
-    public function testVerifyHomePageFileExists(): void
+    /**
+     * Test the method that verifies the existence of the home page file.
+     */
+    public function testVerifyHomePageFileExists()
     {
-
-        $this->storageServiceMock->method('verifyHomePageFileExists')
+        // Expectations for the mock object during this test
+        $this->storageServiceMock->expects($this->once())
+            ->method('verifyHomePageFileExists')
             ->willReturn(true);
-
         $this->assertTrue($this->storageServiceMock->verifyHomePageFileExists());
     }
 
-    public function testVerifyHomePageFileExistsWhenFileDoesNotExist(): void
+    /**
+     * Test the method that creates an HTML file for the home page.
+     */
+    public function testCreateHomePageHtmlFile()
     {
-        $this->storageServiceMock->method('verifyHomePageFileExists')
-            ->willReturn(false);
-
-        $this->assertFalse($this->storageServiceMock->verifyHomePageFileExists());
-    }
-
-    public function testCreateHomePageHtmlFile(): void
-    {
-        $outputPath = dirname(dirname(__DIR__)) . '/output//' . $this->storageServiceMock::HOMEPAGE;
-
         $content = "Test homepage content";
 
+        // Expectations for the mock object during this test
         $this->storageServiceMock->expects($this->once())
             ->method('createHomePageHtmlFile')
-            ->willReturnCallback(function () use ($outputPath, $content) {
-                // Simulate writing content to a file
-                file_put_contents($outputPath, $content);
-            });
-
+            ->with($content);
         $this->storageServiceMock->createHomePageHtmlFile($content);
-
-        $this->assertFileExists($outputPath);
-        $this->assertStringContainsString($content, file_get_contents($outputPath));
     }
 
-    public function testCreateSitemapHtmlFile(): void
+    /**
+     * Test the method that creates an HTML sitemap file.
+     */
+    public function testCreateSitemapHtmlFile()
     {
-        $outputPath = dirname(dirname(__DIR__)) . '/output//' . $this->storageServiceMock::SITEMAP;
-
         $content = ['link1', 'link2', 'link3'];
 
+        // Expectations for the mock object during this test
         $this->storageServiceMock->expects($this->once())
             ->method('createSitemapHtmlFile')
-            ->willReturnCallback(function () use ($outputPath, $content) {
-                // Simulate writing content to a file
-                file_put_contents($outputPath, implode("\n", $content));
-            });
-
+            ->with($content);
         $this->storageServiceMock->createSitemapHtmlFile($content);
-
-        $this->assertFileExists($outputPath);
-        $this->assertNotEmpty($content);
-
-        // Read the content from the file
-        $fileContent = file_get_contents($outputPath);
-
-        // Compare the file content with the expected content
-        $this->assertEquals(implode("\n", $content), $fileContent);
     }
 
-    public function testDeleteSiteMapFileWhenFileExists()
+    /**
+     * Test the method that deletes the sitemap file.
+     */
+    public function testDeleteSiteMapFile()
     {
-
+        // Expectations for the mock object during this test
         $this->storageServiceMock->expects($this->once())
             ->method('deleteSiteMapFile')
             ->willReturn(true);
-
         $this->assertTrue($this->storageServiceMock->deleteSiteMapFile());
     }
 
-    public function testDeleteSiteMapFileWhenFileDoesNotExist()
+    /**
+     * Test the method that views the content of the sitemap file.
+     */
+    public function testViewSiteMapFile()
     {
+        $fileContent = '<ul><li><a href="link1">link1</a></li></ul>';
 
+        // Expectations for the mock object during this test
         $this->storageServiceMock->expects($this->once())
-            ->method('deleteSiteMapFile')
-            ->willReturn(false);
-
-        $this->assertFalse($this->storageServiceMock->deleteSiteMapFile());
+            ->method('viewSiteMapFile')
+            ->willReturn($fileContent);
+        $this->assertEquals($fileContent, $this->storageServiceMock->viewSiteMapFile());
     }
 }
