@@ -1,4 +1,3 @@
-```
 # WP-WEB-CRAWLER
 
 A PHP-based application designed to help administrators enhance their website's SEO rankings. This tool facilitates website crawling, internal link analysis, and sitemap generation. Powered by Docker for effortless setup, wp-web-crawler offers an intuitive interface for evaluating internal link structures.
@@ -21,6 +20,7 @@ To install the WP-WEB-CRAWLER, follow these steps:
 2. Clone the repository to your local machine.
 3. Navigate to the project directory.
 4. Run the following command:
+
 ```
 
 make setup
@@ -148,4 +148,3 @@ Before initiating web crawling using WP-WEB-CRAWLER or any other web crawling to
 Always respect the website's terms of service and robots.txt guidelines when performing web crawling activities. Unauthorized or aggressive crawling can put unnecessary strain on web servers and may be considered unethical or even illegal.
 
 WP-WEB-CRAWLER is designed to assist administrators in enhancing their website's SEO rankings through responsible and ethical crawling practices. Please use this tool responsibly and ensure that you have the necessary permissions to crawl a website.
-```
