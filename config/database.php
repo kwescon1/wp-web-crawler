@@ -2,6 +2,19 @@
 
 return [
 	/*
+	|	----------------------------------------------------------------------	----
+	| Database Connection Driver
+	|	----------------------------------------------------------------------	----
+	|
+	| This value specifies which database connection driver the 	application should use.
+	| It allows the application to easily switch between different  database systems
+	| such as MySQL, SQLite, etc. By default, it uses 'mysql'.
+	|
+	*/
+	'db_connection' => getenv( 'DB_CONNECTION' ) ?: 'mysql',
+
+
+	/*
 	|--------------------------------------------------------------------------
 	| Database Host
 	|--------------------------------------------------------------------------
@@ -11,7 +24,7 @@ return [
 	|
 	*/
 
-	'db_host'     => getenv( 'MYSQL_HOST' ) ?: 'db',
+	'db_host'       => getenv( 'DB_HOST' ) ?: 'db',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -22,7 +35,7 @@ return [
 	|
 	*/
 
-	'db_port'     => getenv( 'MYSQL_PORT' ) ?: '3306',
+	'db_port'       => getenv( 'DB_PORT' ) ?: '3306',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -33,7 +46,7 @@ return [
 	|
 	*/
 
-	'db_name'     => getenv( 'MYSQL_DATABASE' ) ?: '',
+	'db_name'       => getenv( 'DB_DATABASE' ) ?: '',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -44,7 +57,7 @@ return [
 	|
 	*/
 
-	'db_user'     => getenv( 'MYSQL_USER' ) ?: '',
+	'db_user'       => getenv( 'DB_USER' ) ?: '',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -55,6 +68,6 @@ return [
 	|
 	*/
 
-	'db_password' => getenv( 'MYSQL_PASSWORD' ) ?: '',
+	'db_password'   => getenv( 'DB_PASSWORD' ) ?: '',
 
 ];
