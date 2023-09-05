@@ -81,8 +81,7 @@ docker exec -it -u ubuntu wp-web-crawler /bin/bash -c "./vendor/bin/phpunit"
 ```
 
 <p float="left">
-<img src="/images/successful_installation.png" width="300" alt="Successful Installation" title="Successful Installation" />
-<figcaption>Successful Installation</figcaption>
+<img src="/images/successful_installation.png" width="250" alt="Successful Installation" title="Successful Installation" />
 </p>
 
 ## Screenshots
