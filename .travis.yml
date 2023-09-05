@@ -54,7 +54,7 @@
 #   fi
 
 
-sudo: required
+sudo: false
 language: php
 services:
   - docker
@@ -87,7 +87,7 @@ matrix:
 
 before_install:
   - rm -rf vendor
-  # - phpenv config-rm xdebug.ini || return 0
+  - phpenv config-rm xdebug.ini || return 0
   - rm composer.lock
 
 install:
