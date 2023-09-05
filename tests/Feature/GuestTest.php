@@ -3,7 +3,7 @@
 use PHPUnit\Framework\TestCase;
 use GuzzleHttp\Client;
 
-class AuthTest extends TestCase
+class GuestTest extends TestCase
 {
 
     protected $baseUrl;
