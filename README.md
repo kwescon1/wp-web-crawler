@@ -43,11 +43,11 @@ To install the WP-WEB-CRAWLER, follow these steps:
 ## Screenshots
 
 <p float="left">
-  <img src="/images/guest_page.png" width="400" alt="Guest Page" title="Guest Page" />
-  <img src="/images/login_page.png" width="400" alt="Login Page" title="Login Page" />
-  <img src="/images/admin_page.png" width="400" alt="Admin Page" title="Admin Page" />
-  <img src="/images/admin_page_showing_sitemap.png" width="400" alt="Admin Page Showing Sitemap" title="Admin Page Showing Sitemap" />
-  <img src="/images/successful_installation.png" width="400" alt="Successful Installation" title="Successful Installation" />
+  <img src="/images/guest_page.png" width="300" alt="Guest Page" title="Guest Page" />
+  <img src="/images/login_page.png" width="300" alt="Login Page" title="Login Page" />
+  <img src="/images/admin_page.png" width="300" alt="Admin Page" title="Admin Page" />
+  <img src="/images/admin_page_showing_sitemap.png" width="300" alt="Admin Page Showing Sitemap" title="Admin Page Showing Sitemap" />
+  <img src="/images/successful_installation.png" width="300" alt="Successful Installation" title="Successful Installation" />
 </p>
 
 ## Accessing the application
