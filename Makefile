@@ -39,3 +39,6 @@ teardown: ## Tear down containers and remove volumes
 
 shell: ## Access the shell of the wp-web-crawler container
 	docker exec -it -u ubuntu wp-web-crawler /bin/bash
+
+test: ## Run tests inside the container
+	@docker exec -it -u ubuntu wp-web-crawler /bin/bash -c "./vendor/bin/phpunit"
