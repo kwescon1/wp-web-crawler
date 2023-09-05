@@ -87,31 +87,12 @@ docker exec -it -u ubuntu wp-web-crawler /bin/bash -c "./vendor/bin/phpunit"
 
 ## Screenshots
 
-<div style="display: flex; justify-content: space-between;">
-    <figure style="width: 45%; text-align: center;">
-        <img src="/images/guest_page.png" width="300" alt="Guest Page" title="Guest Page" />
-        <figcaption>Guest Page</figcaption>
-    </figure>
-
-    <figure style="width: 45%; text-align: center;">
-        <img src="/images/login_page.png" width="300" alt="Login Page" title="Login Page" />
-        <figcaption>Login Page</figcaption>
-    </figure>
-
-</div>
-
-<div style="display: flex; justify-content: space-between; margin-top: 20px;">
-    <figure style="width: 45%; text-align: center;">
-        <img src="/images/admin_page.png" width="300" alt="Admin Page" title="Admin Page" />
-        <figcaption>Admin Page</figcaption>
-    </figure>
-
-    <figure style="width: 45%; text-align: center;">
-        <img src="/images/admin_page_showing_sitemap.png" width="300" alt="Admin Page Showing Sitemap" title="Admin Page Showing Sitemap" />
-        <figcaption>Admin Page Showing Sitemap</figcaption>
-    </figure>
-
-</div>
+<p float="left">
+  <img src="/images/guest_page.png" width="250" alt="Guest Page" title="Guest Page" />
+  <img src="/images/login_page.png" width="250" alt="Login Page" title="Login Page" />
+  <img src="/images/admin_page.png" width="250" alt="Admin Page" title="Admin Page" />
+  <img src="/images/admin_page_showing_sitemap.png" width="250" alt="Admin Page Showing Sitemap" title="Admin Page Showing Sitemap" />
+</p>
 
 ## Accessing the application
 
