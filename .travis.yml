@@ -94,5 +94,6 @@ install:
   - make setup
 
 script:
-  - make test
+  - make setup && make test
+
 
