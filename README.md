@@ -27,9 +27,9 @@ make setup
 
 ```
 
-**NB: After running the command, the application would be installed.**
+- **NB: After running the command, the application would be installed.**
 
-To access the list of available make commands:
+- To access the list of available make commands:
 
 ```
 
