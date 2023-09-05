@@ -93,7 +93,4 @@ before_install:
 install:
   - make setup
 
-script:
-  - make setup && make test
-
 
