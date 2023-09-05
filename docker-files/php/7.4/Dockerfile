@@ -3,6 +3,9 @@ FROM php:7.4-fpm
 # Set working directory
 WORKDIR /var/www/wp-web-crawler
 
+RUN mkdir -p /var/www/wp-web-crawler/output/
+RUN chmod -R 755 /var/www/wp-web-crawler/output/ 
+
 # Create an error log file
 RUN touch /var/log/error.log
 
