@@ -87,27 +87,31 @@ docker exec -it -u ubuntu wp-web-crawler /bin/bash -c "./vendor/bin/phpunit"
 
 ## Screenshots
 
-<figure style="display: inline-block; width: 45%; margin-right: 5%; text-align: center;">
-    <img src="/images/guest_page.png" width="300" alt="Guest Page" title="Guest Page" />
-    <figcaption>Guest Page</figcaption>
-</figure>
+<div style="display: flex; justify-content: space-between;">
+    <figure style="width: 45%; text-align: center;">
+        <img src="/images/guest_page.png" width="300" alt="Guest Page" title="Guest Page" />
+        <figcaption>Guest Page</figcaption>
+    </figure>
 
-<figure style="display: inline-block; width: 45%; text-align: center;">
-    <img src="/images/login_page.png" width="300" alt="Login Page" title="Login Page" />
-    <figcaption>Login Page</figcaption>
-</figure>
+    <figure style="width: 45%; text-align: center;">
+        <img src="/images/login_page.png" width="300" alt="Login Page" title="Login Page" />
+        <figcaption>Login Page</figcaption>
+    </figure>
 
-<br> <!-- This line break ensures there's a gap between the two rows of images -->
+</div>
 
-<figure style="display: inline-block; width: 45%; margin-right: 5%; text-align: center;">
-    <img src="/images/admin_page.png" width="300" alt="Admin Page" title="Admin Page" />
-    <figcaption>Admin Page</figcaption>
-</figure>
+<div style="display: flex; justify-content: space-between; margin-top: 20px;">
+    <figure style="width: 45%; text-align: center;">
+        <img src="/images/admin_page.png" width="300" alt="Admin Page" title="Admin Page" />
+        <figcaption>Admin Page</figcaption>
+    </figure>
 
-<figure style="display: inline-block; width: 45%; text-align: center;">
-    <img src="/images/admin_page_showing_sitemap.png" width="300" alt="Admin Page Showing Sitemap" title="Admin Page Showing Sitemap" />
-    <figcaption>Admin Page Showing Sitemap</figcaption>
-</figure>
+    <figure style="width: 45%; text-align: center;">
+        <img src="/images/admin_page_showing_sitemap.png" width="300" alt="Admin Page Showing Sitemap" title="Admin Page Showing Sitemap" />
+        <figcaption>Admin Page Showing Sitemap</figcaption>
+    </figure>
+
+</div>
 
 ## Accessing the application
 
