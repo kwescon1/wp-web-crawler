@@ -1,6 +1,7 @@
+```
 # WP-WEB-CRAWLER
 
-A PHP-based application designed to help administrators enhance their website's SEO rankings. This tool facilitates website crawling, internal link analysis, and sitemap generation. Powered by Docker for effortless setup, wp-web-crawler offers an intuitive interface for evaluating internal link structures."
+A PHP-based application designed to help administrators enhance their website's SEO rankings. This tool facilitates website crawling, internal link analysis, and sitemap generation. Powered by Docker for effortless setup, wp-web-crawler offers an intuitive interface for evaluating internal link structures.
 
 ## Software Requirements
 
@@ -19,64 +20,107 @@ To install the WP-WEB-CRAWLER, follow these steps:
 1. Ensure the "make" utility has been installed on your local machine.
 2. Clone the repository to your local machine.
 3. Navigate to the project directory.
-4. Run the following command
-   - make setup
-     **NB: After running the command, the application would be installed.**
-   - Use "**make help**" to access the list of available make commands
+4. Run the following command:
+```
+
+make setup
+
+```
+
+**NB: After running the command, the application would be installed.**
+
+To access the list of available make commands:
+
+```
+
+make help
+
+```
 
 ### Alternatively
 
 1. Install Docker and Docker Compose on your system.
 2. Clone the repository to your local machine.
-3. Navigate to the project directory
-4. Create a .env file based off .env.example
-5. Start docker engine
-6. Build containers
-   - docker-compose build
-7. Bring up containers in detached mode
-   - docker-compose up -d
-8. SSH into the wp-web-crawler app container
-   - docker exec -it -u ubuntu wp-web-crawler /bin/bash
-9. Run the following commands
-   - composer install
+3. Navigate to the project directory.
+4. Create a .env file based off .env.example.
+5. Start docker engine.
+6. Build containers:
 
-Certainly!
+```
 
----
+docker-compose build
+
+```
+
+7. Bring up containers in detached mode:
+
+```
+
+docker-compose up -d
+
+```
+
+8. SSH into the wp-web-crawler app container:
+
+```
+
+docker exec -it -u ubuntu wp-web-crawler /bin/bash
+
+```
+
+9. Run the following command:
+
+```
+
+composer install
+
+```
 
 ## Running Tests
 
 After successful installation:
 
 - If you have `make` installed, run tests using:
-  ```
-  make test
-  ```
-- If you don't have `make` installed, use:
-  ```
-  docker exec -it -u ubuntu wp-web-crawler /bin/bash -c "./vendor/bin/phpunit"
-  ```
 
----
+```
+
+make test
+
+```
+
+- If you don't have `make` installed, use:
+
+```
+
+docker exec -it -u ubuntu wp-web-crawler /bin/bash -c "./vendor/bin/phpunit"
+
+```
 
 <p float="left">
-  <img src="/images/successful_installation.png" width="300" alt="Successful Installation" title="Successful Installation" />
+<img src="/images/successful_installation.png" width="300" alt="Successful Installation" title="Successful Installation" />
+<figcaption>Successful Installation</figcaption>
 </p>
 
 ## Screenshots
 
 <p float="left">
-  <img src="/images/guest_page.png" width="300" alt="Guest Page" title="Guest Page" />
-  <img src="/images/login_page.png" width="300" alt="Login Page" title="Login Page" />
-  <img src="/images/admin_page.png" width="300" alt="Admin Page" title="Admin Page" />
-  <img src="/images/admin_page_showing_sitemap.png" width="300" alt="Admin Page Showing Sitemap" title="Admin Page Showing Sitemap" />
-  <img src="/images/successful_installation.png" width="300" alt="Successful Installation" title="Successful Installation" />
+<img src="/images/guest_page.png" width="300" alt="Guest Page" title="Guest Page" />
+<figcaption>Guest Page</figcaption>
+
+<img src="/images/login_page.png" width="300" alt="Login Page" title="Login Page" />
+<figcaption>Login Page</figcaption>
+
+<img src="/images/admin_page.png" width="300" alt="Admin Page" title="Admin Page" />
+<figcaption>Admin Page</figcaption>
+
+<img src="/images/admin_page_showing_sitemap.png" width="300" alt="Admin Page Showing Sitemap" title="Admin Page Showing Sitemap" />
+<figcaption>Admin Page Showing Sitemap</figcaption>
 </p>
 
 ## Accessing the application
 
 - Visit the following urls to ensure everything is correctly setup:
-  - **[WP-WEB-CRAWLER](http://localhost:7005)**
+- **[WP-WEB-CRAWLER](http://localhost:7005)**
 
 ### Login Details
 
@@ -104,3 +148,4 @@ Before initiating web crawling using WP-WEB-CRAWLER or any other web crawling to
 Always respect the website's terms of service and robots.txt guidelines when performing web crawling activities. Unauthorized or aggressive crawling can put unnecessary strain on web servers and may be considered unethical or even illegal.
 
 WP-WEB-CRAWLER is designed to assist administrators in enhancing their website's SEO rankings through responsible and ethical crawling practices. Please use this tool responsibly and ensure that you have the necessary permissions to crawl a website.
+```
