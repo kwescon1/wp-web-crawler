@@ -70,10 +70,10 @@ branches:
     - master
     - develop
 
-cache:
-  directories:
-    - vendor
-    - $HOME/.composer/cache
+# cache:
+#   directories:
+#     - vendor
+#     - $HOME/.composer/cache
 
 matrix:
   fast_finish: true
@@ -87,10 +87,14 @@ matrix:
 
 before_install:
   - rm -rf vendor
-  - phpenv config-rm xdebug.ini || return 0
+  # - phpenv config-rm xdebug.ini || return 0
   - rm composer.lock
 
 install:
   - make setup
+
+script:
+  - make test
+
 
 
