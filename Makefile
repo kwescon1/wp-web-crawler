@@ -9,7 +9,7 @@ help: ## Print help
 setup: modify_permission build up ## Setup project
 
 kill_composer: ## Remove composer container
-	@docker compose rm composer
+	@docker-compose rm composer
 
 modify_permission: ## Change file entrypoint permissions
 	chmod +x docker-files/composer/entrypoint.sh
@@ -21,10 +21,10 @@ create-env: ## Copy .env.example to .env
 	fi
 
 up: ## Start containers in detached mode
-	@docker compose up -d
+	@docker-compose up -d
 
 build: create-env ## Build defined images
-	@docker compose build --no-cache
+	@docker-compose build --no-cache
 
 force_start: ## Force a restart of defined services
 	@docker-compose up -d --force-recreate
@@ -32,10 +32,10 @@ force_start: ## Force a restart of defined services
 fresh: modify_permission build force_start ## A fresh recreate of all containers
 
 ps: ## Show containers
-	@docker compose ps
+	@docker-compose ps
 
 teardown: ## Tear down containers and remove volumes
-	docker compose down -v
+	docker-compose down -v
 
 shell: ## Access the shell of the wp-web-crawler container
 	docker exec -it -u ubuntu wp-web-crawler /bin/bash
