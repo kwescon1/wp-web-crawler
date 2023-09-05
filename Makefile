@@ -6,7 +6,7 @@ help: ## Print help
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n\nTargets:\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
 
 # Define targets
-setup: modify_permission build up test ## Setup project
+setup: rm_composer_lock modify_permission build up ## Setup project
 
 kill_composer: ## Remove composer container
 	@docker-compose rm composer
@@ -14,6 +14,14 @@ kill_composer: ## Remove composer container
 modify_permission: ## Change file entrypoint permissions
 	chmod +x docker-files/composer/entrypoint.sh
 	chmod u+rwx output/url.txt
+
+rm_composer_lock: ## remove composer lock
+	@if [ -f "composer.lock" ]; then \
+		echo "Removing composer.lock file."; \
+		rm composer.lock; \
+	else \
+		echo "composer.lock does not exist."; \
+	fi
 
 create-env: ## Copy .env.example to .env
 	@if [ ! -f ".env" ]; then \
@@ -30,7 +38,7 @@ build: create-env ## Build defined images
 force_start: ## Force a restart of defined services
 	@docker-compose up -d --force-recreate
 
-fresh: modify_permission build force_start test ## A fresh recreate of all containers
+fresh: rm_composer_lock modify_permission build force_start ## A fresh recreate of all containers
 
 ps: ## Show containers
 	@docker-compose ps
