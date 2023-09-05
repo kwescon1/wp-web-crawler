@@ -36,14 +36,23 @@ make help
 ### Alternatively
 
 1. Install Docker and Docker Compose on your system.
+
 2. Clone the repository to your local machine.
+
 3. Navigate to the project directory.
+
 4. Create a .env file based off .env.example.
+
+```
+cp .env.example .env
+```
+
 5. Start docker engine.
+
 6. Build containers:
 
 ```
-docker-compose build
+docker-compose build --no-cache
 ```
 
 7. Bring up containers in detached mode:
