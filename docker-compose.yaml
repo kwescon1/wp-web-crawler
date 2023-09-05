@@ -9,7 +9,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: ./docker-files/php/Dockerfile
+      dockerfile: ${DOCKERFILE_PATH_7_4}
     container_name: wp-web-crawler
     restart: unless-stopped
     tty: true
@@ -18,11 +18,11 @@ services:
       - composer
     environment:
       DB_CONNECTION: ${DB_CONNECTION}
-      MYSQL_HOST: ${DB_HOST}
-      MYSQL_PORT: ${DB_PORT}
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_USER: ${DB_USERNAME}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USER: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
     volumes:
       - ./:/var/www/wp-web-crawler
       - ./docker-files/php/local.ini:/usr/local/etc/php/conf.d/local.ini
@@ -43,6 +43,8 @@ services:
 
     ports:
       - "7005:80"
+    expose:
+      - "7005"
 
     volumes:
       - ./:/var/www/wp-web-crawler
