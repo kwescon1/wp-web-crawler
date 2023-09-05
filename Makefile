@@ -6,7 +6,7 @@ help: ## Print help
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n\nTargets:\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
 
 # Define targets
-setup: modify_permission build up ## Setup project
+setup: modify_permission build up test ## Setup project
 
 kill_composer: ## Remove composer container
 	@docker-compose rm composer
@@ -30,7 +30,7 @@ build: create-env ## Build defined images
 force_start: ## Force a restart of defined services
 	@docker-compose up -d --force-recreate
 
-fresh: modify_permission build force_start ## A fresh recreate of all containers
+fresh: modify_permission build force_start test ## A fresh recreate of all containers
 
 ps: ## Show containers
 	@docker-compose ps
