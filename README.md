@@ -40,6 +40,29 @@ To install the WP-WEB-CRAWLER, follow these steps:
 9. Run the following commands
    - composer install
 
+Certainly!
+
+---
+
+## Running Tests
+
+After successful installation:
+
+- If you have `make` installed, run tests using:
+  ```
+  make test
+  ```
+- If you don't have `make` installed, use:
+  ```
+  docker exec -it -u ubuntu wp-web-crawler /bin/bash -c "./vendor/bin/phpunit"
+  ```
+
+---
+
+<p float="left">
+  <img src="/images/successful_installation.png" width="300" alt="Successful Installation" title="Successful Installation" />
+</p>
+
 ## Screenshots
 
 <p float="left">
