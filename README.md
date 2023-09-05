@@ -22,9 +22,7 @@ To install the WP-WEB-CRAWLER, follow these steps:
 4. Run the following command:
 
 ```
-
 make setup
-
 ```
 
 - **NB: After running the command, the application would be installed.**
@@ -32,9 +30,7 @@ make setup
 - To access the list of available make commands:
 
 ```
-
 make help
-
 ```
 
 ### Alternatively
@@ -47,33 +43,25 @@ make help
 6. Build containers:
 
 ```
-
 docker-compose build
-
 ```
 
 7. Bring up containers in detached mode:
 
 ```
-
 docker-compose up -d
-
 ```
 
 8. SSH into the wp-web-crawler app container:
 
 ```
-
 docker exec -it -u ubuntu wp-web-crawler /bin/bash
-
 ```
 
 9. Run the following command:
 
 ```
-
 composer install
-
 ```
 
 ## Running Tests
@@ -83,17 +71,13 @@ After successful installation:
 - If you have `make` installed, run tests using:
 
 ```
-
 make test
-
 ```
 
 - If you don't have `make` installed, use:
 
 ```
-
 docker exec -it -u ubuntu wp-web-crawler /bin/bash -c "./vendor/bin/phpunit"
-
 ```
 
 <p float="left">
@@ -103,19 +87,27 @@ docker exec -it -u ubuntu wp-web-crawler /bin/bash -c "./vendor/bin/phpunit"
 
 ## Screenshots
 
-<p float="left">
-<img src="/images/guest_page.png" width="300" alt="Guest Page" title="Guest Page" />
-<figcaption>Guest Page</figcaption>
+<figure style="display: inline-block; width: 45%; margin-right: 5%; text-align: center;">
+    <img src="/images/guest_page.png" width="300" alt="Guest Page" title="Guest Page" />
+    <figcaption>Guest Page</figcaption>
+</figure>
 
-<img src="/images/login_page.png" width="300" alt="Login Page" title="Login Page" />
-<figcaption>Login Page</figcaption>
+<figure style="display: inline-block; width: 45%; text-align: center;">
+    <img src="/images/login_page.png" width="300" alt="Login Page" title="Login Page" />
+    <figcaption>Login Page</figcaption>
+</figure>
 
-<img src="/images/admin_page.png" width="300" alt="Admin Page" title="Admin Page" />
-<figcaption>Admin Page</figcaption>
+<br> <!-- This line break ensures there's a gap between the two rows of images -->
 
-<img src="/images/admin_page_showing_sitemap.png" width="300" alt="Admin Page Showing Sitemap" title="Admin Page Showing Sitemap" />
-<figcaption>Admin Page Showing Sitemap</figcaption>
-</p>
+<figure style="display: inline-block; width: 45%; margin-right: 5%; text-align: center;">
+    <img src="/images/admin_page.png" width="300" alt="Admin Page" title="Admin Page" />
+    <figcaption>Admin Page</figcaption>
+</figure>
+
+<figure style="display: inline-block; width: 45%; text-align: center;">
+    <img src="/images/admin_page_showing_sitemap.png" width="300" alt="Admin Page Showing Sitemap" title="Admin Page Showing Sitemap" />
+    <figcaption>Admin Page Showing Sitemap</figcaption>
+</figure>
 
 ## Accessing the application
 
