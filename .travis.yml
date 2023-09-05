@@ -86,6 +86,7 @@ matrix:
       env: DOCKERFILE_PATH_7_2="./docker-files/php/7.2/Dockerfile"
 
 before_install:
+  - rm -rf vendor
   - phpenv config-rm xdebug.ini || return 0
   - rm composer.lock
 
