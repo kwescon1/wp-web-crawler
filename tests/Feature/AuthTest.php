@@ -2,11 +2,9 @@
 
 use PHPUnit\Framework\TestCase;
 use GuzzleHttp\Client;
-use Tests\Traits\RefreshDatabase;
 
 class AuthTest extends TestCase
 {
-    // use RefreshDatabase;  // Use the RefreshDatabase trait
 
     protected $baseUrl;
     protected $client;
