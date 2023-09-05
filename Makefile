@@ -13,6 +13,7 @@ kill_composer: ## Remove composer container
 
 modify_permission: ## Change file entrypoint permissions
 	chmod +x docker-files/composer/entrypoint.sh
+	chmod u+rwx output/url.txt
 
 create-env: ## Copy .env.example to .env
 	@if [ ! -f ".env" ]; then \
